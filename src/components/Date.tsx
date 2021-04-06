@@ -10,7 +10,7 @@ export default function Date({ date }: Props) {
       <style jsx>
         {`
           span {
-            color: #9b9b9b;
+            color: var(--secondary-color);
           }
         `}
       </style>

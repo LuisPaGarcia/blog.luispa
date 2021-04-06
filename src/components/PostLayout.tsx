@@ -108,6 +108,7 @@ export default function PostLayout({
             h1 {
               margin: 0 0 0.5rem;
               font-size: 2.25rem;
+              word-break: break-word;
             }
             .tag-list {
               list-style: none;

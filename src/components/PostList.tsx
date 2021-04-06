@@ -33,13 +33,6 @@ export default function PostList({ posts, tags, pagination }: Props) {
           }}
         />
       </div>
-      <ul className={"categories"}>
-        {tags.map((it, i) => (
-          <li key={i}>
-            <TagLink tag={it} />
-          </li>
-        ))}
-      </ul>
       <style jsx>{`
         .container {
           display: flex;
@@ -65,18 +58,6 @@ export default function PostList({ posts, tags, pagination }: Props) {
         }
         .post-list {
           flex: 1 0 auto;
-        }
-        .categories {
-          display: none;
-        }
-        .categories li {
-          margin-bottom: 0.75em;
-        }
-
-        @media (min-width: 769px) {
-          .categories {
-            display: block;
-          }
         }
       `}</style>
     </div>

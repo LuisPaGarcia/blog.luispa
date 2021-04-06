@@ -10,7 +10,7 @@ export default function Author({ author }: Props) {
       <style jsx>
         {`
           span {
-            color: #9b9b9b;
+            color: var(--secondary-color);
           }
         `}
       </style>

@@ -15,12 +15,13 @@ export default function PostItem({ post }: Props) {
         <style jsx>
           {`
             a {
-              color: #222;
+              color: var(--font-color);
               display: inline-block;
             }
             h2 {
               margin: 0;
               font-weight: 500;
+              line-height: 1.5;
             }
           `}
         </style>
