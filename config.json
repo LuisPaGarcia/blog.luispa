@@ -1,7 +1,7 @@
 {
-  "base_url": "https://wutali-nextjs-netlify-blog.netlify.app",
-  "site_title": "Next.js Netlify Blog",
-  "site_description": "Next.js blog template for Netlify",
+  "base_url": "https://musing-neumann-d6d072.netlify.app",
+  "site_title": "LuisPa Blog",
+  "site_description": "LuisPa Blog",
   "site_keywords": [
     {
       "keyword": "Next.js"
