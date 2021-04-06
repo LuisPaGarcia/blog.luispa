@@ -1,0 +1,74 @@
+---
+templateKey: blog-post
+title: Big O notation in short
+date: 2020-04-20T15:27:01.838Z
+description: >-
+  tl;dr:
+
+  - You should make a habit of thinking about the time and space complexity of
+  algorithms as you design them.
+
+  - Beware of premature optimization
+
+  - Every operation in an algorithm counts. Be wise to select your battles.
+tags:
+  - programming
+  - big o
+  - algorithms
+---
+
+## The idea behind big O notation
+
+Big O notation is the language we use for talking about how long an algorithm takes to run. It's how we compare the efficiency of different approaches to a problem.
+
+It's like math except it's an awesome, not-boring kind of math where you get to wave your hands through the details and just focus on what's basically happening.
+
+With big O notation, we express the runtime in terms of—brace yourself—how quickly it grows relative to the input, as the input gets arbitrarily large.
+
+Let's break that down:
+
+1. **How quickly the runtime grows**: It's hard to pin down the exact runtime of an algorithm. It depends on the speed of the processor, what else the computer is running, etc. So instead of talking about the runtime directly, we use big O notation to talk about how quickly the runtime grows.
+
+2. **Relative to the input**: If we were measuring our runtime directly, we could express our speed in seconds. Since we're measuring how quickly our runtime grows, we need to express our speed in terms of...something else. With Big O notation, we use the size of the input, which we call "n." So we can say things like the runtime grows "on the order of the size of the input" `O(n)` or "on the order of the square of the size of the input" `O(n^2)`.
+
+3. **As the input gets arbitrarily large**: Our algorithm may have steps that seem expensive when `n` is small but are eclipsed eventually by other steps as `n` gets huge. For big O analysis, we care most about the stuff that grows fastest as the input grows, because everything else is quickly eclipsed as `n` gets very large. (If you know what an asymptote is, you might see why "big O analysis" is sometimes called "asymptotic analysis.")
+
+> The Big O describes the asymptotic performance, and more specific it gives the upper bound for the time complexity of an algorithm. This means that it doesn't look at how much actual, time a function takes, could be 1 ms could be 1 min, just at how efficient your algorithm is.
+
+**O(n)** means that the script will run in linear time. Example of that would be:
+
+```javascript
+// javascript
+
+for(int i=0; i<n; ++i) {
+   print(i);
+}
+```
+
+Now if you then need to run through that array again, you'll get different performance.
+
+**O(n^2)** = O n squared = Outer loop (i) x outer loop (x)
+
+```javascript
+// javascript
+
+for(int i=0; i<n; ++i) {
+    for(int x=0; x<n; ++x) {
+        print(x);
+    }
+}
+```
+
+## Big O analysis is awesome except when it's not
+
+You should make a habit of thinking about the time and space complexity of algorithms as you design them. Before long this will become second nature, allowing you to see optimizations and potential performance issues right away.
+
+> Asymptotic analysis is a powerful tool but wields it wisely.
+
+Big O ignores constants but **sometimes the matter of the constant**. If we have a script that takes 5 hours to run, an optimization that divides the runtime by 5 might not affect big O, but it still saves you 4 hours of waiting.
+
+**Beware of premature optimization.** Sometimes optimizing time or space negatively impacts readability or coding time. For a young startup, it might be more important to write code that's easy to ship quickly or easy to understand later, even if this means it's less time and space-efficient than it could be.
+
+But that doesn't mean startups don't care about big O analysis. A great engineer (startup or otherwise) knows how to strike the right balance between runtime, space, implementation time, maintainability, and readability.
+
+**You should develop the skill to see time and space optimizations, as well as the wisdom to judge if those optimizations are worthwhile.**
