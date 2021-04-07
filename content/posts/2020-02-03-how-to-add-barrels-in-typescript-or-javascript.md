@@ -21,7 +21,7 @@ This is a short post about how to create a useful import/export strategy on Type
 
 This is the scenario. We have 3 interfaces in our project `interfaces` folder and an `index.ts` file imported them on the root of the project
 
-```
+```typescript
 index.ts
 interfaces/
   bear.interface.ts
@@ -50,7 +50,7 @@ This is the scenario when the barrels come on the scene. We can modify just a li
 
 Add an index to the interfaces folder.
 
-```
+```typescript
 index.ts
 interfaces/
   bear.interface

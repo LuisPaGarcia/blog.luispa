@@ -148,7 +148,7 @@ console.log('The father name is: ', mom)
 This is a very simple example, but I encourage you to reach in your code the use useful use cases to property solve the prop access in JavaScript.
 
 
-```
+```typescript
 // Target example
 const obj = {
     a: 1,
