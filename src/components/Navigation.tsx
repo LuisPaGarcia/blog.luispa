@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Burger from "./Burger";
 import { useState } from "react";
+import config from "../lib/config";
 
 export default function Navigation() {
   const router = useRouter();
@@ -26,6 +27,18 @@ export default function Navigation() {
                 blog
               </a>
             </Link>
+          </li>
+          <li>
+            <a
+              className={
+                router.pathname.startsWith("/packages") ? "active" : null
+              }
+              href={`https://github.com/${config.github_account}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              open source
+            </a>
           </li>
           <li>
             <Link href="/packages">
