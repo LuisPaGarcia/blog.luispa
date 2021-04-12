@@ -1,0 +1,142 @@
+---
+slug: Let's try React without Node.js
+title: lets-try-react-without-node-js
+date: 2017-12-06
+author: luispa
+---
+
+# Context of React
+
+React is a Open Source JavaScript library for building user interfaces. Created and supported by Facebook.
+
+You can find the documentation here: https://reactjs.org/tutorial/tutorial.html#overview
+
+If you're a web developer that can handle **HTML**, **CSS** and **JavaScript** you can try React without Node.js or any other complex tool to manage this.
+
+Easy as a cake!
+
+
+
+## 1. Create a index.html with react, react-dom and babel references.
+
+You can use this on your text editor.
+
+```html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>React Local</title>
+<!-- Import the React, React-Dom and Babel libraries from unpkg -->
+  <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+  <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+  <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+<script type="text/javascript">
+
+</script>
+
+</body>
+
+</html>
+```
+
+
+## 2. Add text/babel script tag
+
+Replace the script tag:
+
+``` html
+<script type="text/javascript">
+
+</script>
+``` 
+
+for 
+
+``` html
+<script type="text/babel">
+
+</script>
+``` 
+
+
+
+## 3. Write any react example on the web in your new text/babel script tag
+
+You have the most basic environment to try react, let's give it a try!
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>React Local</title>
+  <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+  <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+  <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+<script type="text/babel">
+// Obtain the root 
+    const rootElement = document.getElementById('root')
+// Create a ES6 class component    
+    class ShoppingList extends React.Component { 
+// Use the render function to return JSX component      
+    render() { 
+        return (
+        <div className="shopping-list">
+        <h1>Shopping List for {this.props.name}</h1>
+          <ul>
+            <li>Instagram</li>
+            <li>WhatsApp</li>
+            <li>Oculus</li>
+          </ul>
+        </div>
+      );
+      } 
+    }
+// Create a function to wrap up your component
+function App(){
+  return(
+  <div>
+    <ShoppingList name="@luispagarcia on Dev.to!"/>
+  </div>
+  )
+}
+
+
+// Use the ReactDOM.render to show your component on the browser
+    ReactDOM.render(
+      <App />,
+      rootElement
+    )
+</script>
+
+</body>
+
+</html>
+```
+
+### And that's it!
+
+You can drag this index.html file to the browser and you will get your first try of react interface.
+
+It's important to be clear that this way is the most weak and simple way to build a react application, if you want to explore more you can learn about react basics on this free course: https://egghead.io/courses/the-beginner-s-guide-to-reactjs
+
+
+I hope you can give it a try, there's always an easy and simple way to
