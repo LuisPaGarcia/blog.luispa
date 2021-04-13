@@ -1,0 +1,82 @@
+---
+slug: como-esperar-por-un-elemento-en-el-dom
+title: No render? No problem. Como esperar el render de un nodo en el dom.
+date: 2021-04-13
+author: luispa
+tags:
+  - document
+---
+En mi actual rol debo realizar experimentación sobre las aplicaciones existentes, lo cual requiere que pueda tener el control de ejecutar javascript arbitrariamente código dentro de ciertos placements bajo ciertas condiciones. En ciertas situaciones, el script se debe ejecutar solo cuando ciertos elementos han sido renderizados.
+
+Cómo puedo **esperar** por un elemento?
+
+## Implementación de un `waiter`
+
+Estos son los requerimientos/necesidades del helper:
+
+1. Poder **revisar** cada cierto tiempo si en el DOM existe el nodo que se requiere, con un `selector`.
+
+2. Una vez validemos que este nodo existe, se ejecutará el código.
+
+3. Una vez que el nodo ha sido encontrado, el ciclo de chequeo debe detenerse y terminarse.
+
+4. Un tiempo máximo de espera es necesario, como un `timeout` que defina el final de la frecuencia de chequeo.
+
+## Código
+
+Esta función necesita:
+
+1. Un `string` que indique el `querySelector` que buscamos.
+2. Un `integer` del valor máximo de tiempo de espera por el nodo. (El tiempo máximo a esperar por el nodo, en milisegundos).
+3. Un `integer` del valor de la frecuencia de revisión al nodo (cada N milisegundos se revisará si el elemento existe).
+4. Una `function` que contenga el código que queremos ejecutar cuando el nodo sea encontrado. (Como un callback).
+
+```javascript
+function waitForElement(
+  querySelector,
+  timeOutInMilliseconds,
+  sleepInMillis,
+  callBack,
+) {
+
+  const t0 = performance.now(); 
+  const myInterval = setInterval(detectElements, sleepInMillis);
+  function detectElements() {
+    const t1 = performance.now();
+    if ((t1 - t0) <= timeOutInMilliseconds) {
+      const elements = document.querySelectorAll(querySelector);
+      if (elements.length > 0) {
+        clearInterval(myInterval);
+        callBack(elements);
+      }
+    } else {
+      clearInterval(myInterval);
+    }
+  }
+}
+```
+
+## Descripción 
+
+```javascript
+waitForElement(querySelector: String, timeOutInMilliseconds: Number, sleepInMillis: Number, callback: Function)
+```
+
+Toma el `querySelector` y busca si el elemento existe en el DOM cada `sleepInMillis` milisegundos hasta que expire el `timeOutInMilliseconds`, una vez que se ha alcanzado el elemento (si se ha alcanzado), se ejecuta la función de `callback`.
+
+### Ejemplo:
+
+```javascript
+waitForElement('.element-classname', 3000, 200, function(){
+  console.log('Element exists! Run this code.')
+});
+```
+
+## Beneficios de uso
+- Esta función será útil solo en contextos de experimentación o de ejecución post render de código.
+
+
+
+
+
+
