@@ -1,0 +1,172 @@
+---
+slug: how-to-add-a-dynamic-title-on-your-react-app
+title: How to add a dynamic title on your React app
+date: 2017-03-25
+author: luispa
+---
+
+In this post, I'll show you how to create a simple component to add a dynamic title behavior on your web app. 
+
+Here you have a repo with an applicable example: [GitHub Repo](https://github.com/LuisPaGarcia/react-dynamic-title)
+
+## Resume
+
+1. Add the `react-helmet` dependency.
+2. Write the dynamic component for the title.
+3. Add the dynamic component to your router or your pages.
+
+### Add the `react-helmet` dependency.
+
+If you're using `yarn`
+
+```bash
+$ yarn add react-helmet
+```
+If you're using `npm`
+
+```bash
+$ npm i react-helmet
+```
+
+### Write the dynamic component for the title.
+
+You can write an independent component for this example, like this:
+
+```jsx
+// TitleComponent.jsx
+
+import React from 'react';
+import Helmet from 'react-helmet';
+
+const TitleComponent = ({ title }) => {
+	var defaultTitle = '⚛️ app';
+	return (
+		<Helmet>
+			<title>{title ? title : defaultTitle}</title>
+		</Helmet>
+	);
+};
+
+export { TitleComponent };
+```
+
+In this example, we just wrote an independent component that could receive a title and, if you don't send a `prop` as title, the title will be the default title.
+
+ 
+## Add the dynamic component to your routes.
+
+We have multiple approaches to add this component to your app, it depends mostly on your decisions on routing (if you're using Gatsby or Next.js you can ovoid configure a router, but if you're using create-react-app or a react boiler template you can add this to your router. 
+
+
+### Adding this component to your routes (Using router):
+
+
+```jsx
+
+// routes.js
+
+import React from 'react';
+import { Route } from 'react-router';
+import { TitleComponent } from './TitleComponent.jsx';
+
+// withTitle function
+const withTitle = ({ component: Component, title }) => {
+	return class Title extends Component {
+		render() {
+			return (
+				<React.Fragment>
+					<TitleComponent title={title} />
+					<Component {...this.props} />
+				</React.Fragment>
+			);
+		}
+	};
+};
+
+// Example pages 
+const Index = () => <h1>This is the IndexComponent!</h1>;
+const Persons = () => <h1>This is the PersonsComponent!</h1>;
+const Dogs = () => <h1>This is the DogsComponent!</h1>;
+const Food = () => <h1>This is the FoodComponent!</h1>;
+
+// Adding title
+const IndexComponent = withTitle({ component: Index, title: 'Index' });
+const PersonsComponent = withTitle({ component: Persons, title: '🧠 Persons' });
+const DogsComponent = withTitle({ component: Dogs, title: '🐶 Dogs' });
+const FoodComponent = withTitle({ component: Food, title: '🌮 Food' });
+
+// Your router
+export default (
+	<Route>
+		<Route path="/" component={IndexComponent} />
+		<Route path="/persons" component={PersonsComponent} />
+		<Route path="/dogs" component={DogsComponent} />
+		<Route path="/food" component={FoodComponent} />
+	</Route>
+);
+
+```
+
+
+
+### Adding this component to your pages (Using Next.js, Gatsby, After.js):
+
+Using `withTitle` function:
+
+```jsx
+// pages/pageOne.jsx
+
+import React from 'react';
+import { TitleComponent } from './TitleComponent.jsx';
+
+// withTitle function
+const withTitle = ({ component: Component, title }) => {
+	return class Title extends Component {
+		render() {
+			return (
+				<React.Fragment>
+					<TitleComponent title={title} />
+					<Component {...this.props} />
+				</React.Fragment>
+			);
+		}
+	};
+};
+
+const PageOne = () => (
+	<React.Fragment>
+		<h1> Page 1 </h1>
+		// Some content...
+	</React.Fragment>
+);
+
+export default withTitle({ component: PageOne, title: 'Page One!' });
+
+```
+
+Adding directly the `<TitleComponent />` to your page:
+
+```jsx
+// pages/pageOne.jsx
+
+import React from 'react';
+import { TitleComponent } from './TitleComponent.jsx';
+
+const PageOne = () => (
+	<React.Fragment>
+		<TitleComponent title="Page One!" />
+		<h1> Page 1 </h1>
+		// Some content...
+	</React.Fragment>
+);
+
+export default PageOne;
+
+```
+
+Here you have a repo with an applicable example: [GitHub Repo](https://github.com/LuisPaGarcia/react-dynamic-title)
+
+And that's it. Thanks for reading and happy coding!
+
+
+
