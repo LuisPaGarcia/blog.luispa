@@ -1,0 +1,61 @@
+---
+slug: what-the-heck-is-a-rune-in-golang
+title: What the heck is a rune in Golang
+date: 2020-07-07
+author: luispa
+---
+
+
+I miss the Cancún beach because I love to float there...
+
+
+
+Well, let's begin.
+
+If you're familiarized with Golang might you already know what a rune is, but if you wanna clear more, you can continue reading.
+
+In this short post, we will learn why the rune is a type of structure important and powerful in the Golang environment.
+
+Let's start with the origin.
+
+## Characters, ASCII and Unicode
+
+> The rune type is an alias for `int32` and is used to emphasize than an integer represents a code point.
+
+**ASCII** defines 128 characters, identified by the **code points** 0–127. It covers English letters, Latin numbers, and a few other characters.
+
+**Unicode**, which is a superset of ASCII, defines a codespace of **1,114,112 code points**. Unicode version 10.0 covers 139 modern and historic scripts (including the runic alphabet, but not Klingon) as well as multiple symbol sets.
+
+## Strings and UTF-8 encoding
+
+> A string is a sequence of bytes, not runes.
+
+However, strings often contain Unicode text encoded in UTF-8, which encodes all Unicode code points using one to four bytes. (ASCII characters are encoded with one byte, while other code points use more.)
+
+Since the Go source code itself is encoded as UTF-8, string literals will automatically get this encoding.
+
+For example, in the string "café" the character é (code point 233) is encoded using two bytes, while the ASCII characters c, a, and f (code points 99, 97, and 102) only use one:
+
+```golang
+fmt.Println([]byte("café")) // [99 97 102 195 169]
+fmt.Println([]rune("café")) // [99 97 102 233]
+```
+
+### Important points
+- Golang uses runes to manage Unicode chars, instead to limit the development only for ASCII values.
+- The importance to know this difference is to manage better the iteration between elements, and have a more clear scope of spaces, values, and differences between a string and a rune.
+- All of these values are bits and bytes as well, but it's better if we know when to use it and where to use it.
+
+[Original post](https://yourbasic.org/golang/rune/#:~:text=The%20rune%20type%20is%20an,and%20a%20few%20other%20characters.)
+
+Happy coding!
+
+
+
+
+
+
+
+
+
+
