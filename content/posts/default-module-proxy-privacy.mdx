@@ -1,0 +1,43 @@
+---
+slug: default-module-proxy-privacy
+title: "PSA: Go 1.13 Default Module Proxy Privacy"
+date: 2021-04-12
+author: luispa
+---
+## PSA: Go 1.13 Default Module Proxy Privacy
+
+Go 1.13 was just released and by default is using a Google-operated proxy to fetch module dependencies.
+
+Go modules came to the inclusion of the ability to use a proxy when fetching dependencies in the form of modules. **jFrog** quickly launched [GoCenter](https://gocenter.io/) to provide a high-performance cache. Typically, pulling modules from GoCenter was much faster than getting them from someplace like GitHub. GoCenter was optimized for performance for this use case.
+
+## Google By Default
+With the release of Go 1.13 the `GOPROXY` defaults to `https://proxy.golang.org,direct`. This means that commands like `go get` and `go build` will attempt to fetch modules from the Go Proxy, which is operated by Google and governed by the Google Privacy Policy. If the module is not present there, Go will try to fetch it from the source.
+
+To Google's credit, the very first link you'll find when you visit https://proxy.golang.org/ is to the [privacy policy](https://proxy.golang.org/privacy) where the information captured and the privacy policy is documented. I am happy they are sharing this information and being upfront about it.
+
+## Potential Leakage
+This could provide problems for proprietary software. Especially those developing competitive solutions to Google and aren't paying attention.
+
+Consider the case where packages are private to a company. Maybe they are hosted on an internal Gitlab or GitHub Enterprise. These are for internal applications or proprietary software. Details about these packages will be sent to a proxy, by default the one operated by Google.
+
+Just imagine the details one could piece together with this sort of information. You know one or a set of IPs is pulling a certain set of modules. Some public where you have the details and some private but the names leak a little about them. What could one surmise from this information? Especially if they have other data from other data sources to merge with this.
+
+Being mindful of this sort of leakage is the kind of thing management at companies often try to pay attention to.
+
+## Changing Your Configuration
+The Go team realized this problem which is why there are environment variables such as `GOPRIVATE` and `GONOPROXY` that can be used alongside `GOPROXY` to control the proxy configuration and information leakage.
+
+**If you work on a proprietary piece of code in Go you should learn about these environment variables.**
+
+These variables will let you control what is sent to the proxy and even have glob patterns matching. This is useful to have more fine-grained control.
+
+## Defaults Are A Big Deal
+A big concern is defaulted. Most people operate using default settings most of the time. Many people aren't even aware of the settings that can be changed or their options. In the case of Go, I wouldn't be surprised if most developers using Go aren't aware this change is happening and it will silently take effect for them.
+
+The impact of default settings isn't a new idea. Back in 2005, Jakob Nielsen wrote about the [power of defaults](https://www.nngroup.com/articles/the-power-of-defaults/). While the article starts out talking about search engines it does get into other interfaces. At that point it notes:
+
+> Users rely on defaults in many other areas of user interface design. For example, they rarely utilize fancy customization features, making it important to optimize the default user experience, since that's what most users stick to.
+
+In this case, Google optimized the default user experience to send dependency information to them.
+
+
