@@ -1,0 +1,98 @@
+---
+slug: writing-a-simple-api-with-deno
+title: Writing a simple API with Deno
+date: 2020-05-23
+author: luispa
+---
+Today we gonna write a REST API using Deno.
+
+Deno is a simple, modern, and secure runtime for JavaScript and TypeScript that uses V8 and is built in Rust. You can look more about Deno on his [official website](https://deno.land/)
+
+>We're not here to fight and compete between Deno and Node, we're here to learn something new.
+
+#### Steps 
+1. Install Deno.
+2. Create API
+3. Run the API with permissions.
+4. Test our API
+
+### 1. Install Deno
+
+With Shell:
+```sh
+$ curl -fsSL https://deno.land/x/install/install.sh | sh -s v1.0.2
+```
+With PowerShell:
+```sh
+iwr https://deno.land/x/install/install.ps1 -useb -outf install.ps1; .\install.ps1 v1.0.2
+```
+
+### 2. Create API
+
+Open a text editor, and create a file called `index.ts`. Add this to the `index.ts` file.
+
+```typescript
+// Import the oak utils for app and router. Oak works similar than Express in Node, we are using the version 4.0.0 of oak
+import { Application, Router } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
+
+// Let use the host parameters, but we set default values
+const PORT = 8000
+const HOST = 'localhost'
+
+// Start instances of app and router
+const app = new Application()
+const router = new Router()
+
+// This API will have only an get method
+router.get('/api', (context) => {
+  context.response.body = 'Hello from Deno API!'
+})
+
+// We let the app use the routes define above
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+// Start the app in the host and the port setted
+const HOST_PORT = `${HOST}:${PORT}`
+console.log(`Listen on ${HOST_PORT}`)
+app.listen(HOST_PORT)
+```
+
+### 3. Run the API with permissions.
+
+Deno has a feature to explicitly ask for permission to use the computer resources, protocols, and more.
+
+To run the API we need to set the `--allow-net` flag to use the network protocols in our app. Now, run this script in your path where the `index.ts` is.
+
+```sh
+$ deno run --allow-net ./index.ts 
+```
+
+You will see something like this:
+![output deno api console](https://dev-to-uploads.s3.amazonaws.com/i/2xifj230pkuxoebbj5xj.png)
+
+### 4. Test our API
+
+Now we can go to our browser and test the API at `http://localhost:8000`.
+
+You will see something like this:
+
+![output deno api broser](https://dev-to-uploads.s3.amazonaws.com/i/xm7tx4p9oebp5vhkky92.png)
+
+### Wrapping up
+
+This is a simple example of how to create a simple API in Deno.
+
+I invite you to explore new things like Deno, use your energy on learning new things, and ovoid as much as you can the comparison between Deno and other tools.
+
+Remember that this code is just an example, take this implementation as a reference to build your own solid, secure, and scalable solutions.
+
+If you're more curious about Deno, I recommend these resources:
+
+[Build a Chat app with Deno](https://aralroca.com/blog/learn-deno-chat-app)
+[The Deno Handbook](https://flaviocopes.com/deno/)
+[Deno — How’s it Different to Node.js and Should I Learn it?](https://medium.com/swlh/deno-hows-it-different-to-node-js-and-should-i-learn-it-4309d66ff60d)
+
+
+
+Happy coding!
