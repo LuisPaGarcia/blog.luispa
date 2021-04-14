@@ -30,9 +30,6 @@ export default function Navigation() {
           </li>
           <li>
             <a
-              className={
-                router.pathname.startsWith("/packages") ? "active" : null
-              }
               href={`https://github.com/${config.github_account}`}
               rel="noopener noreferrer"
               target="_blank"
