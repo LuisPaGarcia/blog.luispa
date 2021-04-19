@@ -1,0 +1,73 @@
+---
+slug: javascript-prototype-pollution-attack-in-node
+title: JavaScript prototype pollution attack in NodeJS
+date: 2021-04-18
+author: luispa
+tags:
+  - document
+---
+# Prototype pollution attack in NodeJS application
+## General concept of the attack
+
+The general idea behind prototype pollution starts with the fact the attacker has control over at least the parameter `a` and `value` of any expression of the following form:
+
+```javascript
+obj[a][b] = value;
+```
+
+The attacker can set `a` to `__proto__` and the property with the name defined by `b` will be defined on all existing object (of the class of `obj`) of the application with the value `value`.
+
+The same thing can append with the following form when the attacker has at least control of a, b and value.
+
+```javascript
+obj[a][b][c] = value;
+```
+
+The attacker can set `a` to `constructor`, `b` to `prototype` and the property with the name defined by c will be defined on all existing object of the application with the value `value`.
+
+
+
+However since this requires more complex object assignment, the first form is easier to work with.
+
+
+
+While, it’s pretty rare that you will stumble on code that looks textually like the example provided, some manipulation can provide the attacker with similar control.
+
+
+## Mitigation
+### Using Map instead of Object
+
+It essentially works as a HashMap, but without all the security caveats that `Object` have. When a key/value structure is needed, `Map` should be preferred to `Object`.
+
+### Object.create(null)
+
+It’s possible to create object in JavaScript that don’t have any prototype. It requires the usage of the `Object.create` function. Object created through this API won’t have the `__proto__` and `constructor` attributes. Creating object in this fashion can help mitigate prototype pollution attack.
+
+```javascript
+let obj = Object.create(null);
+obj.__proto__ // undefined
+obj.constructor // undefined
+```
+
+### Schema validation of JSON input
+
+Multiple library on npm (ex.: [ajv](https://www.npmjs.com/package/ajv) ) offer schema validation for JSON data. Schema validation ensure that the JSON data contains all the expected attributes with the appropriate type. When using this approach to mitigate “prototype pollution” attack, it’s important that unneeded attributes are rejected. In [ajv](https://www.npmjs.com/package/ajv), this can be done by setting `additionalProperties` to `false` on the schema.
+
+### Freezing the prototype
+
+Using `Object.freeze` will mitigate almost all the exploitable case.
+
+
+
+Note that while, adding function to the prototype of the base object is a frown upon practice, it may still be used in your Node.js application or its dependency. It’s highly recommend checking your Node.js application and its dependency for such usage before going down this route. Since the behavior of frozen object is to silently fail on property assignation, it may introduce hard to identify bug.
+
+```javascript 
+Object.freeze(Object.prototype);
+Object.freeze(Object);
+({}).__proto__.test = 123;
+({}).test // this will be undefined
+```
+
+[Source](https://github.com/HoLyVieR/prototype-pollution-nsec18/blob/master/paper/JavaScript_prototype_pollution_attack_in_NodeJS.pdf)
+
+
