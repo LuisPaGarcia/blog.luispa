@@ -1,0 +1,37 @@
+---
+slug: How to measure time of program execution in bash
+title: how-to-measure-time-of-program-execution-in-bash
+date: 2021-07-16
+author: luispa
+tags:
+  - document
+---
+Sometimes you want to compare the execution time between two different implementations in your scripts, so to do this easily use the `time` built-in shell tool.
+
+First you must know the path of your time shell tool.
+```sh
+$ which time
+/usr/bin/time
+
+```
+
+If you use `time` directly could have some troubles.
+
+```sh
+$ time -f %e sleep 4
+-f: command not found
+real    0m0.071s
+user    0m0.056s
+sys     0m0.012s
+```
+
+Use the `which time` result to use it instead.
+
+```sh
+$ /usr/bin/time -f %e sleep 4
+4.00
+```
+
+You'll get the result in seconds.
+
+The structure must be like `/usr/bin/time -f %e YOUR SCRIPT INSTRUCTIONS HERE`
