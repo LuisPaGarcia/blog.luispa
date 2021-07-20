@@ -1,0 +1,98 @@
+---
+slug: how-to-implement-a-on-demand-flag-system-javascript
+title: How to implement a on-demand flag system in a JavaScript application
+date: 2021-07-20
+author: luispa
+tags:
+  - document
+---
+## tl;dr
+- With the implementation of five functions attached to your application, you can implement a feature flag on-demand system.
+- You must understand how to `wait` and `registrer` your features as isolated functionality chunks of code.
+- Must know how to expose and connect your application to an external on-demand scripting control, like [VWO](https://vwo.com/), [GTM](https://tagmanager.google.com/?hl=es#/home), or any script runner for frontend apps.
+- This design is attached to deployment for every flag added, so consider this on your design.
+
+
+## 1. Expose a global function
+- For this we will need a function that can make a queue of the current exposed flags, then can be executed as expected in the execution order, passing some default arguments and custom arguments.
+
+```js
+// Expose global exection
+function exposeGlobalFunctionAndExecuteQueue(callback, globalName) {
+  const queue = window[globalName] || [];
+
+  window[globalName] = {
+    push: function () {
+      for (let index = 0; index < arguments.length; index++) {
+        callback(arguments[index]);
+      }
+    },
+  };
+
+  for (let index = 0; index < queue.length; index += 1) {
+    window[globalName].push(queue[index]);
+  }
+}
+```
+
+## 2. The dispatcher and the registry
+- Then you must have a way to bind your external instruction to your app, so this function will dispatch the `command` plus the `argument` based in the configuration we set.
+
+```js
+const handlers = {}
+
+function dispatch([command, ...args]) {
+  try {
+    if (handlers[command]) {
+      handlers[command](...args)
+    }
+  } catch (e) {
+    console.error(error)
+  }
+}
+```
+
+The `handlers` object will be the registry of functions we want to trigger after.
+
+So, now we need a function that takes the `handlers` and uses them.
+
+```js
+function registry(command, handler) {
+  handlers[command] = handler;
+};
+```
+
+As you can see, if we put it all together you can handle multiple `commands` each with specific arguments and values.
+
+## 3. Binding your dispatcher and your registry to your feature
+
+So now, we must add to the registry the feature binding.
+
+```js
+exposeGlobalFunctionAndExecuteQueue(dispatch, 'appRegistry')
+
+
+function feature1(...args) {
+  console.log('console the arguments!', args)
+};
+
+registry('runFeature1', feature1);
+```
+
+With this, now our application can use the external registry to trigger the `feature1` function. You can run your console and try it:
+
+```js
+appRegistry.push([ "runFeature1", ['argument1', 2, true] ])
+```
+
+
+## 4. Test it out.
+
+You can see this example on a React App using context: https://react-fzxejy.stackblitz.io
+
+See the code on StackBlitz https://stackblitz.com/edit/react-fzxejy?file=src/index.js
+
+Happy coding!
+
+
+
