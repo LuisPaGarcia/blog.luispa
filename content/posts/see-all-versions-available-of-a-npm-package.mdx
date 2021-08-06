@@ -1,0 +1,25 @@
+---
+slug: see-all-versions-available-of-a-npm-package
+title: See all versions available of a npm package
+date: 2021-08-06
+author: luispa
+tags:
+  - document
+---
+To see in a pretty way all the available versions of any npm package.
+
+```sh
+$ npm view {package_name} versions --json
+```
+
+Example
+
+```sh
+$ npm view webpack versions --json
+```
+
+Write the output into a json file.
+
+```sh
+$ npm view @babel/core versions --json > babel_core_versions.json
+```
