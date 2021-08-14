@@ -16,10 +16,12 @@ This seems pretty awful, don't you think?
 This is how I could bypass the Gmail captcha login and could read the data like a charm:
 
 ## The Tools
+
 We choose to use 3 extra packages aside puppeteer:
-- puppeteer-extra
-- puppeteer-extra-plugin-stealth
-- puppeteer-extra-plugin-adblocker
+
+* puppeteer-extra
+* puppeteer-extra-plugin-stealth
+* puppeteer-extra-plugin-adblocker
 
 So I used this `package.json`
 
@@ -49,7 +51,6 @@ So I used this `package.json`
 To get access to the spreadsheet we need to login first, and then make the redirect to the spreadsheet. So the script will be like this:
 
 ```javascript
-
 const puppeteer = require("puppeteer-extra");
 
 // Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
@@ -95,19 +96,138 @@ function sleep(ms) {
 
 So now we are in, how we can read the data? Well, the best approach with this scenario (read-only spreadsheet) we can download the data by using 2 things:
 
-1. Using `page.keyboard.down` and `page.keyboard.press` to trigger the shortcuts to save the file in the format we want it (PDF, CSV, XLSX).
-2. Setting the download folder handler for the puppeteer app.
+1. Setting the download folder handler for the puppeteer app.
+2. Using `page.keyboard.down` and `page.keyboard.press` to trigger the shortcuts to save the file in the format we want it (PDF, CSV, XLSX).
+
+## The download handler
+
+We need to bind a local folder to be the download folder for the puppeteer. To do this, we need to import the `path` package and configure a `downloadPath`, and then bind the `page._client.send("Page.setDownloadBehavior")` with a custom configuration.
+
+```javascript
+const path = require("path");
+const downloadPath = path.resolve("./download");
+// puppeteer-extra is a drop-in replacement for puppeteer,
+// it augments the installed puppeteer with plugin functionality.
+// Any number of plugins can be added through `puppeteer.use()`
+const puppeteer = require("puppeteer-extra");
+
+// Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+
+// Add adblocker plugin to block all ads and trackers (saves bandwidth)
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+(async function () {
+  // That's it, the rest is puppeteer usage as normal 
+  const browser = await puppeteer.launch({
+    headless: false
+  });
+  const page = await browser.newPage();
+  let navigationPromise = page.waitForNavigation();
+
+  await page.goto("https://accounts.google.com/");
+  await navigationPromise;
+  await page.waitForSelector('input[type="email"]');
+  await page.type('input[type="email"]', process.env.email); // Email login
+  await page.click("#identifierNext");
+
+  await page.waitForSelector('input[type="password"]', { visible: true });
+  await page.type('input[type="password"]', process.env.password); // Password login
+
+  await page.waitForSelector("#passwordNext", { visible: true });
+  await page.click("#passwordNext");
+  navigationPromise = page.waitForNavigation();
+  await navigationPromise;
+  await page.goto(process.env.file_url); // Spreadsheet url
+  // Our download configuration
+
+
+  await page._client.send("Page.setDownloadBehavior", {
+    behavior: "allow",
+    downloadPath: downloadPath,
+  });
+
+  
+  await browser.close();
+})();
+``` 
+
+With this, we are ready to make the download action via shortcuts.
+ 
 
 ## The shortcuts
+
 In this case, I downloaded all the pages via HTML, using the next shortcuts.
 
 `ALT + F` to open the `File` tab.
 `ALT + D` to open the `Download` menu.
 `ALT + W` to select `Website` option, and donwload all the content as HTML.
 
+![shortcuts screenshoot](/images/screenshot-2021-08-13-211500.png "shortcut usage")
 
+The script updated:
 
+```javascript
+const path = require("path");
+const downloadPath = path.resolve("./download");
+// puppeteer-extra is a drop-in replacement for puppeteer,
+// it augments the installed puppeteer with plugin functionality.
+// Any number of plugins can be added through `puppeteer.use()`
+const puppeteer = require("puppeteer-extra");
 
+// Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
 
+// Add adblocker plugin to block all ads and trackers (saves bandwidth)
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+(async function () {
+  // That's it, the rest is puppeteer usage as normal 
+  const browser = await puppeteer.launch({
+    headless: false
+  });
+  const page = await browser.newPage();
+  let navigationPromise = page.waitForNavigation();
 
+  await page.goto("https://accounts.google.com/");
+  await navigationPromise;
+  await page.waitForSelector('input[type="email"]');
+  await page.type('input[type="email"]', process.env.email); // Email login
+  await page.click("#identifierNext");
+
+  await page.waitForSelector('input[type="password"]', { visible: true });
+  await page.type('input[type="password"]', process.env.password); // Password login
+
+  await page.waitForSelector("#passwordNext", { visible: true });
+  await page.click("#passwordNext");
+  navigationPromise = page.waitForNavigation();
+  await navigationPromise;
+  await page.goto(process.env.file_url); // Spreadsheet url
+
+  await page._client.send("Page.setDownloadBehavior", {
+    behavior: "allow",
+    downloadPath: downloadPath,
+  });
+
+  await page.keyboard.down("Alt");
+  await page.keyboard.press("KeyF");
+  await page.keyboard.press("KeyD");
+  await page.keyboard.press("KeyW");
+  await browser.close();
+})();
+
+```
+
+## Wrap up
+
+This is a simple but useful implementation to solve this kind of problem. Hope you enjoy it.
