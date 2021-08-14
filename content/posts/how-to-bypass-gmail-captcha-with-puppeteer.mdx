@@ -1,0 +1,48 @@
+---
+slug: how-to-bypass-gmail-captcha-with-puppeteer
+title: How to bypass gmail captcha with Puppeteer with Node.js
+date: 2021-08-13
+author: luispa
+tags:
+  - document
+---
+I had an situation this week, I wanted to read and validate some data from a private Google Spreadsheet using Puppeteer. I found 2 problems:
+
+1. I needed to log in with a custom email/password to have the access to the spreadsheet. A captcha appears if we use a "vanilla" implementation of the puppeteer app.
+2. The spreadsheet was blocked, we have read-only permission. We can't click, read, modify or make any operation on the cells.
+
+This seems pretty awful, don't you think?
+
+This is how I could bypass the Gmail captcha login and could read the data like a charm:
+
+## The Tools
+We choose to use 3 extra packages aside puppeteer:
+- puppeteer-extra
+- puppeteer-extra-plugin-stealth
+- puppeteer-extra-plugin-adblocker
+
+So I used this `package.json`
+
+```json
+{
+  "name": "spreadsheet-checker",
+  "version": "1.0.0",
+  "description": "an google spreadsheet reader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^8.0.0",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-adblocker": "^2.11.11",
+    "puppeteer-extra-plugin-stealth": "^2.7.6"
+  }
+}
+
+```
+
+
