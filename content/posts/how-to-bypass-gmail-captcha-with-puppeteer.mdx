@@ -42,7 +42,72 @@ So I used this `package.json`
     "puppeteer-extra-plugin-stealth": "^2.7.6"
   }
 }
-
 ```
+
+## The Script
+
+To get access to the spreadsheet we need to login first, and then make the redirect to the spreadsheet. So the script will be like this:
+
+```javascript
+
+const puppeteer = require("puppeteer-extra");
+
+// Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+
+// Add adblocker plugin to block all ads and trackers (saves bandwidth)
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+(async function () {
+  // That's it, the rest is puppeteer usage as normal 
+  const browser = await puppeteer.launch({
+    headless: false
+  });
+  const page = await browser.newPage();
+  let navigationPromise = page.waitForNavigation();
+
+  await page.goto("https://accounts.google.com/");
+  await navigationPromise;
+  await page.waitForSelector('input[type="email"]');
+  await page.type('input[type="email"]', process.env.email); // Email login
+  await page.click("#identifierNext");
+
+  await page.waitForSelector('input[type="password"]', { visible: true });
+  await page.type('input[type="password"]', process.env.password); // Password login
+
+  await page.waitForSelector("#passwordNext", { visible: true });
+  await page.click("#passwordNext");
+  navigationPromise = page.waitForNavigation();
+  await navigationPromise;
+  await page.goto(process.env.file_url); // Spreadsheet url
+
+  await page.screenshot({ path: "spreadsheet-screen.png", fullPage: true }); // We take a screenshot to have probe of the bypass
+  await browser.close();
+})();
+```
+
+## The capture
+
+So now we are in, how we can read the data? Well, the best approach with this scenario (read-only spreadsheet) we can download the data by using 2 things:
+
+1. Using `page.keyboard.down` and `page.keyboard.press` to trigger the shortcuts to save the file in the format we want it (PDF, CSV, XLSX).
+2. Setting the download folder handler for the puppeteer app.
+
+## The shortcuts
+In this case, I downloaded all the pages via HTML, using the next shortcuts.
+
+`ALT + F` to open the `File` tab.
+`ALT + D` to open the `Download` menu.
+`ALT + W` to select `Website` option, and donwload all the content as HTML.
+
+
+
+
+
 
 
