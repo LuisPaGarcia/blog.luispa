@@ -1,0 +1,42 @@
+---
+slug: how-to-ignore-files-git
+title: How to ignore files in Git after being modified
+date: 2021-08-19
+author: luispa
+tags:
+  - document
+---
+This is useful when the `.gitignore` doesn't work as expected. 
+
+To ignore the change use:
+
+```sh
+$ git update-index --assume-unchanged /path/to/file
+```
+
+To revert the ignore attribute:
+
+```sh
+$ git update-index --no-assume-unchanged /path/to/file
+```
+
+So, this alias could be useful for your `.gitconfig`:
+
+```txt
+[alias]
+    hide = update-index --assume-unchanged
+    unhide = update-index --no-assume-unchanged
+```
+
+Or adding the alias using:
+```sh
+$ git config --global alias.hide 'update-index --assume-unchanged'
+$ git config --global alias.unhide 'update-index --no-assume-unchanged'
+```
+
+And use it:
+
+```sh
+$ git hide myfile.ext
+$ git unhide myfile.ext
+```
