@@ -1,0 +1,42 @@
+---
+slug: get-all-files-in-folder-recursively-nodejs
+title: Get all files in folder recursively using Node JS using Generators
+date: 2021-09-08
+author: luispa
+tags:
+  - document
+---
+This function will help us to get all the files inside a folder, even if the folder has folders inside.
+
+This function is using `function*` and `yield`,  you can find more information related to [generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) and [yield](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield).
+
+This function does:
+1. Read all the files of the first level of the folder.
+2. Then iterate over all the files inside, including files and folder.
+3. Under the iteration, it validates if the node is a folder o a file.
+4. If is a folder, we recursively call this same function, under the actual `dir`.
+5. If is not a folder, we attach the result to the yield result.
+
+```javascript
+const fs = require('fs');
+const path = require('path');
+
+// Definition
+function *matchSync(dir) {
+  const files = fs.readdirSync(dir, { withFileTypes: true });
+  for (let i = 0; i < files.length; i++) {
+    if (files[i].isDirectory()) {
+      yield* matchSync(path.join(dir, files[i].name));
+    } else {
+      yield path.join(dir, files[i].name);
+    }
+  }
+}
+
+// Usage
+for (let i of matchSync(__dirname)) {
+  console.log(i);
+}
+```
+
+Happy Coding!
