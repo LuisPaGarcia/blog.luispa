@@ -1,0 +1,160 @@
+---
+slug: git-helpers-I-use-to-deploy-features
+title: Git helpers I use to deploy features
+date: 2021-09-29
+author: luispa
+tags:
+  - document
+---
+Most of my repositories CI/CD are bound to a specific branch naming convention, for example, when a push is made to remote `qa_branch` this branch the CI/CD pipeline starts to deploy it to `QA` environment. 
+
+To make this easier, my team created this way to copy the actual branch to a specific bonded branch. We use `qa_branch` and `stg_branch` branches bound to CI/CD tasks.
+
+## The scripts
+
+### git-qa file
+```sh
+#!/bin/sh
+
+USAGE='[help]'
+LONG_USAGE='git qa help
+        print this long help message.
+git qa
+        push the current branch to qa environment.'
+
+OPTIONS_SPEC=
+. git-sh-setup
+
+
+qa_push () {
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  if test "$branch" = "qa_branch" # Name of the binded branch
+  then
+    die "you need push to qa environment other branch"
+  else
+    git checkout qa_branch && git reset --hard ${branch} && git push origin qa_branch -f && git checkout ${branch}
+  fi
+}
+
+case "$#" in
+0)
+	qa_push "$@" ;;
+*)
+	cmd="$1"
+  shift
+	case "$cmd" in
+  help)
+		git qa -h ;;
+  *)
+		usage ;;
+	esac
+esac
+```
+
+### git-stg file
+```sh
+#!/bin/sh
+
+USAGE='[help]'
+LONG_USAGE='git stg help
+        print this long help message.
+git stg
+        push the current branch to stg environment.'
+
+OPTIONS_SPEC=
+. git-sh-setup
+
+
+stg_push () {
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  if test "$branch" = "stg_branch" # Name of the binded branch
+  then
+    die "you need push to stg environment other branch"
+  else
+    git checkout stg_branch && git reset --hard ${branch} && git push origin stg_branch -f && git checkout ${branch}
+  fi
+}
+
+case "$#" in
+0)
+	stg_push "$@" ;;
+*)
+	cmd="$1"
+  shift
+	case "$cmd" in
+  help)
+		git stg -h ;;
+  *)
+		usage ;;
+	esac
+esac
+```
+
+
+## Steps to get up running (On Linux or WSL)
+
+1. Find your git executables folder using:
+
+```sh
+$ git --exec-path
+/usr/lib/git-core
+```
+
+2. Copy the `git-qa` and `git-stg` files into this folder.
+
+```sh
+# for linux could require `sudo`
+$ cp ./{git-qa,git-stg} $(git --exec-path)
+```
+
+3. Grant permissions to run these scripts. (`755` this mean anyone not user root,
+   and not in group root, was not allowed to run it.)
+
+```sh
+$ cd $(git --exec-path) # Move to the /git-core folder
+$ chmod 755 git-qa  # Could require `sudo`
+$ chmod 755 git-stg # Could require `sudo`
+```
+
+
+
+
+## How to use it
+
+### git qa
+
+This helper reset the branch `qa_branch` with the actual branch, and force a
+push to the remote.
+
+
+
+
+```sh
+$ git qa
+
+Switched to branch 'qa_branch'
+Your branch is up to date with 'origin/qa_branch'.
+HEAD is now at 8e3666be fix(core): Your last commit message
+Everything up-to-date
+Switched to branch 'your_current_branch'
+Your branch is up to date with 'origin/your_current_branch'.
+```
+
+
+### git stg
+
+This helper reset the branch `stg_branch` with the actual branch, and force a
+push to the remote.
+
+```sh
+$ git stg
+
+Switched to branch 'stg_branch'
+Your branch is up to date with 'origin/stg_branch'.
+HEAD is now at 8e3666be fix(core): Your last commit message
+Everything up-to-date
+Switched to branch 'your_current_branch'
+Your branch is up to date with 'origin/your_current_branch'.
+```
+
+
