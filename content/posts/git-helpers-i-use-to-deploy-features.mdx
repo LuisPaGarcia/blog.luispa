@@ -13,7 +13,7 @@ To make this easier, my team created this way to copy the actual branch to a spe
 ## The scripts
 
 ### git-qa file
-```sh
+```bash
 #!/bin/sh
 
 USAGE='[help]'
@@ -52,7 +52,7 @@ esac
 ```
 
 ### git-stg file
-```sh
+```bash
 #!/bin/sh
 
 USAGE='[help]'
@@ -95,14 +95,14 @@ esac
 
 1. Find your git executables folder using:
 
-```sh
+```bash
 $ git --exec-path
 /usr/lib/git-core
 ```
 
 2. Copy the `git-qa` and `git-stg` files into this folder.
 
-```sh
+```bash
 # for linux could require `sudo`
 $ cp ./{git-qa,git-stg} $(git --exec-path)
 ```
@@ -110,7 +110,7 @@ $ cp ./{git-qa,git-stg} $(git --exec-path)
 3. Grant permissions to run these scripts. (`755` this mean anyone not user root,
    and not in group root, was not allowed to run it.)
 
-```sh
+```bash
 $ cd $(git --exec-path) # Move to the /git-core folder
 $ chmod 755 git-qa  # Could require `sudo`
 $ chmod 755 git-stg # Could require `sudo`
@@ -129,7 +129,7 @@ push to the remote.
 
 
 
-```sh
+```bash
 $ git qa
 
 Switched to branch 'qa_branch'
@@ -146,7 +146,7 @@ Your branch is up to date with 'origin/your_current_branch'.
 This helper reset the branch `stg_branch` with the actual branch, and force a
 push to the remote.
 
-```sh
+```bash
 $ git stg
 
 Switched to branch 'stg_branch'
