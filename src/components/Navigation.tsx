@@ -88,6 +88,15 @@ export default function Navigation() {
               color: var(--font-color);
             }
 
+            @media (max-width: 769px) {
+              ul {
+                text-align: left;
+              }
+              li {
+                padding: 0 0 0 1.5rem;
+              }
+            }
+
             @media (min-width: 769px) {
               .container {
                 width: 7rem;
