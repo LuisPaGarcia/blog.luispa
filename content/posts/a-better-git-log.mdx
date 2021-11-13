@@ -1,0 +1,36 @@
+---
+slug: a-better-git-log
+title: A better Git Log
+date: 2021-11-13
+author: luispa
+tags:
+  - document
+---
+I this short post we gonna learn how we can enhance the `git log` experience with 2 updates:
+
+1. Using `git log` statement with params to see the log in a more visible way.
+2. By adding a alias to our git context.
+
+1. The git log enhanced version:
+
+```sh
+$ git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+```
+
+This will show the messages in a pretty neat format.
+
+2. By adding an alias to our git context.
+
+To add the alias like `git lg` or `git l` using this log statement, you need to run:
+
+### To use `git lg`
+```sh
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+```
+
+### To use `git l`
+```sh
+git config --global alias.l "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+```
+
+Happy Coding!
