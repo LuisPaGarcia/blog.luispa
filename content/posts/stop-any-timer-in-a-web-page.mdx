@@ -1,0 +1,64 @@
+---
+slug: stop-any-timer-in-a-web-page
+title: Stop any timer in a web page
+date: 2021-11-17
+author: luispa
+tags:
+  - document
+---
+Quick post about a thing I learned this week solving some specific issue.
+
+Every time you use `setInterval` and integer id is returned, this id is the global identification to that specific task made by your `setInterval` usage.
+
+So, if you run:
+```js
+var intervalId = setInterval(function(){ 
+  console.log('Hey!') 
+}, 1000);
+
+> Hey!
+> Hey!
+> Hey!
+...
+```
+Each execution is an async callback of the console log, let's print the `intervalId` value:
+
+```js
+var intervalId = setInterval(function(){ 
+  console.log('Hey!') 
+}, 1000);
+console.log(intervalId)
+
+> 185
+> Hey!
+> Hey!
+> Hey!
+```
+
+As you can see, the `185` value is the `setInterval` identification value, this value is created at some point as a random value *exposed globally*.
+
+To clear this interval, use `clearInterval` that receives the interval id as an argument.
+
+```js
+clearInterval(185);
+```
+
+So, now we know every time a `setInterval` is created an integer value is created as an ID, exposed globally. If we capture this is in some variable, is easy to stop it. But... What happens if we don't have the interval id?. 
+
+We could run a simple loop using `clearInteval` to stop all the intervals in some specific range, between 1 and 1000.
+
+```js
+// The 1K limitation is optional, can be less
+for( let id = 1; id < 1000; a++ ) {
+  clearInterval(id);
+};
+```
+
+This code will run 1000 times and clear all the intervals between 1 and 1000. Is not the best performance approach, but it works seamlessly.
+
+If you want to try this, go to this site https://vclock.com/timer/ and run the loop in the console.
+
+Happy Coding!
+
+
+
