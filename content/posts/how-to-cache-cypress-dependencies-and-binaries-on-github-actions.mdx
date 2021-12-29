@@ -7,23 +7,18 @@ tags:
   - document
 ---
 ## tl;dr
-- Github will charge you by execution time, so apply this feature will reduce your invoice.
-- This is a very specific approach to run Cypress by demand, without the existing Cypress Action.
-- The benefits of ovoid the `npm ci` step can speed up the action execution.
+
+* Github will charge you by execution time, so apply this feature will reduce your invoice.
+* This is a very specific approach to run Cypress by demand, without the existing Cypress Action.
+* The benefits of ovoid the `npm ci` step can speed up the action execution.
 
 Most of the Github Actions I've created are Node.js apps, so the `npm install` is always part of the requirements. I found 2 ways to reduce the execution time by using the `actions/cache@v2` [cache action](https://github.com/actions/cache/). 
-- The Cypress binaries are saved in the folder `~/.cache/Cypress` folder, so we need to cache it too.
 
-
+* The Cypress binaries are saved in the folder `~/.cache/Cypress` folder, so we need to cache it too.
 
 1. Cache your `node_modules` and the `~/.cache/Cypress` folders
 
 We can win time by using `npm ci` with a resolved dependency tree, by caching the `package-lock.json` context.
-
-
-
-
-
 
 ```yaml
 name: CI
@@ -69,9 +64,11 @@ This will let you save the dependency install process time on every run.
 
 For my project, I saved more than a minute on each run:
 
+### Before (❌ Uncached)
 
+![]()
 
-
+### After (✅ Cached)
 
 ## Wrap up
 
