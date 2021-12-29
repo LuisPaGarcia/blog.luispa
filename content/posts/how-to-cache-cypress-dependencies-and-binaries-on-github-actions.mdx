@@ -1,0 +1,83 @@
+---
+slug: how-to-cache-cypress-dependencies-and-binaries-on-github-actions
+title: How to cache Cypress dependencies and binaries on Github Actions
+date: 2021-12-29
+author: luispa
+tags:
+  - document
+---
+## tl;dr
+
+* Github will charge you by execution time, so apply this feature will reduce your invoice.
+* This is a very specific approach to run Cypress by demand, without the existing Cypress Action.
+* The benefits of ovoid the `npm ci` step can speed up the action execution.
+
+Most of the Github Actions I've created are Node.js apps, so the `npm install` is always part of the requirements. I found 2 ways to reduce the execution time by using the `actions/cache@v2` [cache action](https://github.com/actions/cache/). 
+
+* The Cypress binaries are saved in the folder `~/.cache/Cypress` folder, so we need to cache it too.
+
+1. Cache your `node_modules` and the `~/.cache/Cypress` folders
+
+We can win time by using `npm ci` with a resolved dependency tree, by caching the `package-lock.json` context.
+
+```yaml
+name: CI
+
+on: main
+
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Cache Cypress Binary
+        id: cache-cypress-binary
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: binary-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+
+
+      # ... here all the things related to the job, like test script, lint or deploy
+```
+
+This will let you save the dependency install process time on every run.
+
+For my project, I saved more than a minute on each run:
+
+### Before (❌ Uncached)
+
+![before cache github tasks](/images/before_cache.png "before cache")
+
+### After (✅ Cached)
+
+![after cache github tasks](/images/after_cache.png "after cache")
+
+## Wrap up
+
+This simple implementation can save you money, so I think it would be great for you and you and your team. Keep in mind these notes: 
+
+- The cache will last 7 days in Github.
+- This was used for a very specific Cypress implementation, so use it if you see value for your project.
+- So, let's reduce your Github invoice right now :D.
+
+Happy coding!
