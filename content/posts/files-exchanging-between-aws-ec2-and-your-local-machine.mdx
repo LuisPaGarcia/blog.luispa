@@ -1,0 +1,61 @@
+---
+slug: files-exchanging-between-aws-ec2-and-your-local-machine
+title: How to files exchanging between AWS EC2 and your local machine
+date: 2022-02-15
+author: luispa
+tags:
+  - document
+---
+# Copying files from local to EC2
+
+## tl;dr
+- We will use `scp`, this tool is Secure Copy or SCP is a means of securely transferring files between two machines on a network. SCP uses SSH for improved security and will prompt you if it needs a password or passphrase for authentication.
+- You'll need the `scp` [tool](https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/) and your `key_name.pem` file to make this.
+- By using these two resources, you can define which files do you want to copy between your EC2 instance and your local machine.
+- This is an alternative if you use Filezilla for the file exchanging.
+
+## How to transfer files from your local machine to an EC2 instance
+
+Run this script on your local machine
+
+```sh
+$ scp -i /path/to/your/key_name.pem /path/of/yout/local/file/to/copy server_username@ec2-xx-xx-xxx-xxx.compute-1.amazonaws.com:path/where/ to/save/the/file
+```
+
+## How to transfer files from an EC2 instance to your local machine
+
+Run this script on your local machine.
+
+```sh
+$ scp -i /path/to/your/key_name.pem server_username@ec2-xx-xx-xxx-xxx.compute-1.amazonaws.com:path/where/the/file/exists /your/local/directory/to/save/the/file
+```
+
+### Final Notes
+- Depending on the operative system, you should change the `server_username`. For an Ubuntu instance, you could use `ubuntu` or `root` user. 
+- Make sure the user has to read permissions on the server directory.
+- If you want to transfer all the files on a directory, use an asterisk `*` on the path where all the files exist. See the example below
+
+```sh
+$ scp -i /path/to/your/key_name.pem \
+server_username@ec2-xx-xx-xxx-xxx.compute-1.amazonaws.com:~/* \
+/your/local/directory/to/save/the/files
+```
+
+Happy coding!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
