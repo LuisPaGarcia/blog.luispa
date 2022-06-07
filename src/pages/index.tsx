@@ -3,6 +3,7 @@ import BasicMeta from "../components/meta/BasicMeta";
 import OpenGraphMeta from "../components/meta/OpenGraphMeta";
 import TwitterCardMeta from "../components/meta/TwitterCardMeta";
 import { SocialList } from "../components/SocialList";
+import Script from "next/script";
 
 export default function Index() {
   return (
@@ -15,7 +16,9 @@ export default function Index() {
           <h1>
             LuisPa's Blog<span className="fancy">.</span>
           </h1>
-          <span className="handle">Software Engineer - Node.js | Golang | React | Web Stuff</span>
+          <span className="handle">
+            Software Engineer - Node.js | Golang | React | Web Stuff
+          </span>
           <h2>A blog with some thoughts and opinions.</h2>
           <SocialList />
         </div>
@@ -57,6 +60,18 @@ export default function Index() {
           }
         }
       `}</style>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-ZSL2VH9QNH"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-ZSL2VH9QNH');
+        `}
+      </Script>
     </Layout>
   );
 }
