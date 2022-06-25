@@ -1,0 +1,112 @@
+---
+slug: some-thoughts-on-using-puppetter-for-automated-processes
+title: Some Thoughts on using Puppeteer for automate processes
+date: 2022-06-24
+author: luispa
+tags:
+  - document
+  - mock
+---
+> During the last months I have been using [puppeteer](https://pptr.dev/) to automate a very hostile form in some government site. At the end I could found the way to dodge the ways the site tries to ovoid automation, these are some automation advices when you're creating this kind of tools.
+
+These are some recommendation when building automation tools, mostly with tools like Puppeteer. Is a very unique use case, but the learning points I found are very useful. 
+
+The site is build with Vue and vanilla PHP, so it was fun to abuse the limitations. But we get it, is a SPA under a lot of limitations, like:
+
+1. You cannot copy/paste into input fields.
+2. The code of the SPA is obfuscated. The data retrieved from the APIs is obfuscated too.
+3. The site has very slow time to interactive on each phase because of the code obfuscated reached to had more and more JS.
+4. And, is almost imposible to review the source code and learn on how the requests are made, or the data 
+
+## Setting a generous timeout could be a great safety net
+By default, all the `page.waitForSelector` implementation have 30 seconds of timeout, if the site is server-rendered it will have different behavior when having a lot of traffic. At some point if you don't handle these error the instance will throw an error and exit.
+
+So, I implemented 2 things: A longer timeout, and an error handler when the timeout is reached.
+
+```js
+const {TimeoutError} = require('puppeteer/Errors');
+
+try {
+  const yourSelector = 'body > input.class';
+  const timeoutInMs = 60 * 10000;
+  await page.waitForSelector(yourSelector, {timeout: timeoutInMs});
+} catch (e) {
+  if (e instanceof TimeoutError) {
+    // Do something if this is a timeout error
+  }
+}
+```
+
+## Apply some puppeteer packages will help a lot to be recognized as 
+
+By adding `puppeteer-extra`, `puppeteer-extra-plugin-stealth`, and 
+`puppeteer-extra-plugin-adblocker` your instance will be able to pass as usual for the current trackers or anti-bot methods.
+
+This is the implementation I made:
+
+```js
+const puppeteer = require("puppeteer-extra"); // You need to have `puppeteer` already installed
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+
+// Usual browser usage
+const browser = await puppeteer.launch({ ... })
+```
+
+## Create synthetic pauses or sleeps when needed
+
+At some point, I needed to wait an stablished amount of seconds without waiting for something. I created this function (nothing new) to sleep for some seconds.
+
+```js
+// Yeah, TypeScript... hate me if you want 
+export const sleep = async (secs: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, secs * 1000));
+```
+
+Optional, but helpful.
+
+## Create a function to type entire strings
+
+I create this helper to write complete strings in inputs. Very handy!
+
+```js
+import { Page } from "puppeteer"; // type import
+
+export async function typeWord(
+  page: Page,
+  word: string = "",
+  keyToPressOnFinish: string = ""
+) {
+  await page.keyboard.type(word);
+  // Puppeteer key string. Optional to press a key on finish
+  if (keyToPressOnFinish) {
+    await page.keyboard.press(keyToPressOnFinish);
+  }
+}
+```
+
+## Travel across the form by using the Tab key
+
+Did I mentioned the form was VERY hostile? Well, at some point I couldn't move around from a `select` input to another one. So, I found the only way to move around a couple of fields was by clicking the logo and then type 11 times the `Tab` key. Awesome? nope, Handy? noope, it works? Yep!
+
+Because the key press is `async`, we create an array of `N` elements and then iterate it.
+
+```js
+  // This let us to press 8 times the tab key.
+  const times = 8;
+  for (const _ of new Array(times).fill(0)) {
+    await page.keyboard.press("Tab");
+    await sleep(0.1); // This was optional for debugging
+  }
+```
+
+At the moment, these are the tips I have in mind.
+
+Thanks for reading :)
+
+
+
+
+
