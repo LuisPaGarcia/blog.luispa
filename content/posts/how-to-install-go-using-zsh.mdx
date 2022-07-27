@@ -1,0 +1,146 @@
+---
+slug: how-to-install-go-using-zsh
+title: How to install Go when you're using zsh
+date: 2022-07-26
+author: luispa
+tags:
+  - document
+---
+> The official Go installation instructions is confusing, here's a quick tutorial on how I setup Go on a Mac environment using Oh My Zsh.
+
+## Steps
+1. Download Go
+2. Configure the Environment
+3. Validate the installation
+4. Run a program to test
+
+### 1. Download Go
+
+The easiest way to do this is to install it using `brew`, [you can read more about brew here](https://brew.sh/):
+
+```sh
+$ brew install go
+```
+
+After the installation, you should be able to run this command and see an output that is not an error.
+
+```sh
+$ go version
+go version go1.18.4 darwin/arm64
+```
+
+### 2. Configure the Environment
+
+I like to keep all my Go projects in `$HOME/go` directory. Depending on your setup, add the following 2 env variables to your shell configs and define the desired paths:
+
+First check your shell:
+```sh
+$ echo $SHELL
+/usr/bin/zsh
+```
+
+Because I'm using ZSH, I'll add the 2 vars to the `$HOME/.zshrc` config file:
+
+```sh
+$ export GOPATH=$HOME/go
+$ export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+```
+
+Reload the configuration:
+
+```sh
+source $HOME/.zshrc
+```
+
+### 3. Validate the installation
+
+```sh
+$ go version
+go version go1.18.4 darwin/arm64
+
+$ echo $GOPATH
+/home/luispa/go
+
+$ echo $PATH
+usr/local/go/bin:/home/luispa/go/bin
+```
+
+### 4. Run a program to test
+
+Let's create a directory with a testing program:
+
+```sh
+$ mkdir -p $HOME/go/src/hello
+$ cd $HOME/go/src/hello
+$ nano hello.go # or open the file using your favorite editor
+```
+
+Paste the following Hello's code into the `./hello.go` file:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+```
+
+### 4. Run a program to test
+
+Run this script to create the `go.mod` file.
+
+```sh
+# Go to the go path
+$ cd $GOPATH
+
+# Go to the hello path
+$ cd src/hello
+
+# Create the `.mod` file
+$ go mod init example.com/hello
+go: creating new go.mod: module example.com/greetings
+go: to add module requirements and sums:
+	go mod tidy
+
+# See the content of the directory
+$ ls
+go.mod  main.go
+
+# See the content of the go.mod file
+$ cat go.mod
+module example.com/greetings
+
+go 1.18
+```
+
+Then, run this to install your package.
+
+```sh
+# Install the package and generate the bin
+$ go install
+
+# Go to the directory `bin` to see the executable.
+$ cd ../../bin
+
+# See the content of the bin directory
+$ ls
+hello
+
+# Run the binary
+$ ./hello
+Hello, World!
+```
+`hello` is your new generated program binary. You can now execute it from any directory because the `$GOPATH/bin` is included in your previously configured `$PATH`.
+
+## Wrap up
+
+You installed Go and fully setup its environment.
+
+Happy coding!
+
+
+
+
+
