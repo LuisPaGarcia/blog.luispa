@@ -24,7 +24,7 @@ $ brew install go
 
 After the installation, you should be able to run this command and see an output that is not an error.
 
-```sh
+```shell
 $ go version
 go version go1.18.4 darwin/arm64
 ```
@@ -34,27 +34,27 @@ go version go1.18.4 darwin/arm64
 I like to keep all my Go projects in `$HOME/go` directory. Depending on your setup, add the following 2 env variables to your shell configs and define the desired paths:
 
 First check your shell:
-```sh
+```shell
 $ echo $SHELL
 /usr/bin/zsh
 ```
 
 Because I'm using ZSH, I'll add the 2 vars to the `$HOME/.zshrc` config file:
 
-```sh
+```shell
 $ export GOPATH=$HOME/go
 $ export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 ```
 
 Reload the configuration:
 
-```sh
+```shell
 source $HOME/.zshrc
 ```
 
 ### 3. Validate the installation
 
-```sh
+```shell
 $ go version
 go version go1.18.4 darwin/arm64
 
@@ -69,7 +69,7 @@ usr/local/go/bin:/home/luispa/go/bin
 
 Let's create a directory with a testing program:
 
-```sh
+```shell
 $ mkdir -p $HOME/go/src/hello
 $ cd $HOME/go/src/hello
 $ nano hello.go # or open the file using your favorite editor
@@ -91,7 +91,7 @@ func main() {
 
 Run this script to create the `go.mod` file.
 
-```sh
+```shell
 # Go to the go path
 $ cd $GOPATH
 
@@ -117,7 +117,7 @@ go 1.18
 
 Then, run this to install your package.
 
-```sh
+```shell
 # Install the package and generate the bin
 $ go install
 
