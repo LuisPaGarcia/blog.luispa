@@ -11,7 +11,7 @@ I﻿n JS is quite of easy to replace chars by using `str.replace` for example, b
 T﻿his tiny post will build an example on how to make a slug from a Spanish sentence.
 
 ```javascript
-
+// Input example
 const spanishSentences = [
   "teléfono",
   "árbol",
@@ -21,6 +21,7 @@ const spanishSentences = [
   "Qué grande es ese perro"
 ];
 
+// Function definition
 function createSlug(input){
   return input
     .toLowerCase()
@@ -31,33 +32,12 @@ function createSlug(input){
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+// Usage
 const output = spanishSentences.map(createSlug);
 console.log(output);
-
-
-  "árbol",
-  "colibrí",
-  "cómpramelo",
-  "Mandó una carta",
-  "Qué grande es ese perro"
-];
-​
-function createSlug(input){
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/[\s_-]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-​
-const output = spanishSentences.map(createSlug);
-console.log(output);
+// Output:
 // ["telefono", "arbol", "colibri", "compramelo", "mando-una-carta", "que-grande-es-ese-perro"]
 ```
-
-
 
 [Y﻿ou can see this example working here](https://jsbin.com/pokofigeva/edit?html,js,console,output)
 
