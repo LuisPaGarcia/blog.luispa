@@ -1,0 +1,62 @@
+---
+slug: how-to-remove-accent-marks-string-javascript
+title: How to remove accent marks in a string using vanilla JavaScript
+date: 2022-09-25
+author: luispa
+tags:
+  - document
+---
+I﻿n JS is quite of easy to replace chars by using `str.replace` for example, but, what happens when you want to remove accent marks?
+
+T﻿his tiny post will build an example on how to make a slug from a Spanish sentence.
+
+`﻿``javascript
+const spanishSentences = [
+  "teléfono",
+  "árbol",
+  "colibrí",
+  "cómpramelo",
+  "Mandó una carta",
+  "Qué grande es ese perro"
+];
+
+function createSlug(input){
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+const output = spanishSentences.map(createSlug);
+console.log(output);
+
+
+  "árbol",
+  "colibrí",
+  "cómpramelo",
+  "Mandó una carta",
+  "Qué grande es ese perro"
+];
+​
+function createSlug(input){
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+​
+const output = spanishSentences.map(createSlug);
+console.log(output);
+// ["telefono", "arbol", "colibri", "compramelo", "mando-una-carta", "que-grande-es-ese-perro"]
+`﻿``
+
+[Y﻿ou can see this example working here](https://jsbin.com/pokofigeva/edit?html,js,console,output)
+
+H﻿appy Coding! :)
+
