@@ -12,8 +12,6 @@ A﻿fter dealing with this issue for a couple of hours, I found the most accurat
 
 **S﻿ome context:** After the version 5 of Chalk it relies in more dependencies and configurations than before. So, to solve this I found this version:
 
-
-
 S﻿tep 1: Install the latest 4.x version.
 
 ```shell
@@ -22,19 +20,19 @@ npm install chalk@4.1.2
 
 S﻿tep 2: The Chalk dependency can be used with require or import syntax
 
-```
+```typescript
 // Using import in JS or TS
 const chalk = require('chalk');
 console.log(chalk.green('Hello world In Green!'));
 ```
 
-```
+```typescript
 // Using import in TS
 import * as chalk from "chalk";
 console.log(chalk.red("Hello world in Red!"));
 ```
 
-```
+```typescript
 // Using deconstruction import in TS
 import { blue } from "chalk";
 console.log(blue("Hello world in blue!"));
