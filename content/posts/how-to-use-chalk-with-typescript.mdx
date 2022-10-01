@@ -1,0 +1,45 @@
+---
+slug: how-to-use-chalk-with-typescript
+title: How to use chalk with Typescript
+date: 2022-09-30
+author: luispa
+tags:
+  - document
+---
+T﻿his is the most easy way to solve the chalk usage in TS.
+
+A﻿fter dealing with this issue for a couple of hours, I found the most accurate way to solve the usage of [Chalk](https://www.npmjs.com/package/chalk) in Typescript.
+
+**S﻿ome context:** After the version 5 of Chalk it relies in more dependencies and configurations than before. So, to solve this I found this version:
+
+
+
+S﻿tep 1: Install the latest 4.x version.
+
+```shell
+npm install chalk@4.1.2
+```
+
+S﻿tep 2: The Chalk dependency can be used with require or import syntax
+
+```
+// Using import in JS or TS
+const chalk = require('chalk');
+console.log(chalk.green('Hello world In Green!'));
+```
+
+```
+// Using import in TS
+import * as chalk from "chalk";
+console.log(chalk.red("Hello world in Red!"));
+```
+
+```
+// Using deconstruction import in TS
+import { blue } from "chalk";
+console.log(blue("Hello world in blue!"));
+```
+
+A﻿nd that's it, hope you enjoyed.
+
+H﻿appy hacking!
