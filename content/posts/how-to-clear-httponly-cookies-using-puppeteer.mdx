@@ -1,0 +1,45 @@
+---
+slug: how-to-clear-httpOnly-cookies-using-puppeteer
+title: How to clear httpOnly cookies using Puppeteer
+date: 2022-10-03
+author: luispa
+tags:
+  - document
+---
+T﻿his week I had an issue doing an implementation with Puppeteer. I had a httpOnly cookie doing some validation on the server that didn't leave me continue the process I was making.
+
+I﻿f you don't know what an httpOnly cookie is, you can read this post: <https://developer.mozilla.org/es/docs/Web/HTTP/Cookies#cookies_secure_y_httponly>
+
+W﻿ell, I found there's no way to erase it by using Javascript. So doing a JS code injection will not work. The only way to do this is by open the browser devtools and the clear it from there... 
+
+T﻿hen I found in **Puppeter** you can open a devtools instance! So, if you can open a devtools instance you can exploit it, right?
+
+Y﻿es, in Puppeteer is possible to clear the httpOnly cookies. By doing this:
+
+```typescript
+async function browser(){
+  const browser = await puppeteer.launch({
+    headless: false,
+    ignoreHTTPSErrors: true,
+    args: [`--window-size=1800,1000`],
+  });
+  
+  const page = await browser.newPage();
+  // Using google as example, you can use your URL here
+  await page.goto("https://google.com", {
+    waitUntil: "load",
+    timeout: 0,
+  });
+  // Create a client for CDP Session
+  const client = await page.target().createCDPSession();
+  // Send this string as the action to make in CDP session
+  await client.send("Network.clearBrowserCookies");
+  // All cookies are gone!
+  console.log("all cookies are gone");
+
+}
+```
+
+W﻿ell, this is the most short way to show this, so thanks for read.
+
+H﻿appy hacking!
