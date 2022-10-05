@@ -11,3 +11,13 @@ tags:
     name: mdx
   - slug: markdown
     name: markdown
+  - slug: automation
+    name: automation
+  - slug: javascript
+    name: javascript
+  - slug: typescript
+    name: typescript
+  - slug: nodejs
+    name: nodejs
+  - slug: puppeteer
+    name: puppeteer
