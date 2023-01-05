@@ -1,0 +1,31 @@
+---
+slug: how-do-i-find-the-last-version-of-a-deleted-file-in-git
+title: How do I find the last version of a deleted file in Git
+date: 2023-01-04
+author: luispa
+tags:
+  - document
+---
+A few months ago, I deleted a file. 
+
+Today, I realized that actually, I need it! I picked a random commit 6 months ago and found the file… but hm, what if it changed after that point? 
+
+How do I find the \*final\* version of that file?  
+
+Here's the Git command I used:
+
+`﻿``sh
+$ git log --full-history -- src/path/to/file.js
+`﻿``
+
+This finds the commit that deleted the file. So, I checked out that commit, and then backed up one more:
+
+`﻿``sh
+$ git checkout HEAD~1
+`﻿``
+
+This loads the file right before it was deleted! 🎉
+
+Git is such a powerful tool. One of these days I'll make an interactive tutorial for it.
+
+H﻿appy hacking!
