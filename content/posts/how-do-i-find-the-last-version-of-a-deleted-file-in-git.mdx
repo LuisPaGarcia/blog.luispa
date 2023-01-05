@@ -14,15 +14,15 @@ How do I find the \*final\* version of that file?
 
 Here's the Git command I used:
 
-`﻿``sh
+```sh
 $ git log --full-history -- src/path/to/file.js
-`﻿``
+```﻿
 
 This finds the commit that deleted the file. So, I checked out that commit, and then backed up one more:
 
-`﻿``sh
+```sh
 $ git checkout HEAD~1
-`﻿``
+```﻿
 
 This loads the file right before it was deleted! 🎉
 
