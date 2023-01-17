@@ -1,0 +1,53 @@
+---
+slug: "'mastering-javascript-generators-understanding-and-using-the-power-of-pa\
+  usable-functions'"
+title: "Mastering JavaScript Generators: Understanding and Using the Power of
+  Pausable Functions"
+date: 2023-01-16
+author: luispa
+tags:
+  - javascript
+---
+JavaScript generators are a special type of function that can be paused and resumed, allowing you to control the flow of execution and produce a series of values. This makes them a powerful tool for tasks such as iterating through a large dataset or generating a stream of data.
+
+To define a generator function, you use the `function*` syntax instead of the regular `function` keyword. Inside the generator, you can use the `yield` keyword to pause the function and produce a value. When the generator is resumed, it picks up right where it left off, allowing you to iterate through a series of values without the need for a loop.
+
+Here is an example of a simple generator that produces the Fibonacci sequence:
+
+```javascript
+function* fibonacci() {
+  let [prev, curr] = [0, 1];
+  while (true) {
+    yield curr;
+    [prev, curr] = [curr, prev + curr];
+  }
+}
+
+const sequence = fibonacci();
+console.log(sequence.next().value); // 1
+console.log(sequence.next().value); // 1
+console.log(sequence.next().value); // 2
+console.log(sequence.next().value); // 3
+console.log(sequence.next().value); // 5
+```
+
+You can use the `next()` method to advance the generator to the next value. The method returns an object with a `value` property that contains the yielded value, and a `done` property that is `true` when the generator has completed.
+
+Generators can also be used in combination with the `for-of` loop, which allows you to iterate through a series of values without the need for a traditional loop.
+
+
+
+```javascript
+for (let value of fibonacci()) {
+  console.log(value);
+  if (value > 100) {
+    break;
+  }
+}
+```
+
+In addition, you can use the `yield*` statement inside a generator to delegate to another generator or iterable object. This allows you to easily compose multiple generators together and create more complex data streams.
+
+Generators are a powerful feature in JavaScript that can help you write more elegant and efficient code. They allow you to control the flow of execution, iterate through a series of values, and create complex data streams. With their help, you can easily create efficient, sophisticated, and robust applications.
+
+T﻿hanks for reading, happy hacking!
