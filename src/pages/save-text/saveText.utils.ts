@@ -5,20 +5,20 @@ const db = new GistDB({
   token: GITHUB_TOKEN,
 });
 
-export async function saveText({
+export async function saveTextUtil({
   content,
   filename,
 }: {
-  content: { [key: string]: unknown };
+  content: string;
   filename: string;
 }) {
   try {
     const filenameCrypto = crypto.randomUUID();
-    await db.create({
+    const response = await db.create({
       filename: `${filename}-${filenameCrypto}.json`,
-      content: content,
+      content: JSON.parse(content),
     });
-    return true;
+    return response;
   } catch (error) {
     return false;
   }
