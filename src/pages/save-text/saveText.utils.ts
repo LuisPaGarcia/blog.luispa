@@ -6,20 +6,20 @@ const db = new GistDB({
 });
 
 export async function saveTextUtil({
-  content,
   filename,
+  content,
 }: {
-  content: string;
   filename: string;
+  content: object;
 }) {
   try {
     const filenameCrypto = crypto.randomUUID();
     const response = await db.create({
-      filename: `${filename}-${filenameCrypto}.json`,
-      content: JSON.parse(content),
+      filename: `${filenameCrypto}-${filename}`,
+      content: content,
     });
-    return response;
+    return [false, response];
   } catch (error) {
-    return false;
+    return [true, null];
   }
 }
