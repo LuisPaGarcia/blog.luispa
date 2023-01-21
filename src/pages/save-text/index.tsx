@@ -11,7 +11,7 @@ export default function SaveText() {
   const inputRef = useRef(null);
   useFocus(inputRef);
   useEffect(() => {
-    fetch("/api/user")
+    fetch("/.netlify/functions/hello")
       .then((data) => data.json())
       .then((data) => console.log(data));
   });
