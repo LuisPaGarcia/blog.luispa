@@ -12,22 +12,32 @@ const handler: Handler = async (
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
-  
+
   console.log({ body: event.body });
   const { filename, content }: { filename: string; content: string } =
     JSON.parse(event.body);
 
+  let contentData;
+  try {
+    contentData = JSON.parse(content);
+  } catch (_) {
+    contentData = { data: content };
+  }
+
   try {
     const filenameCrypto = crypto?.randomUUID();
+    
     const response = await db.create({
       filename: `${filenameCrypto}-${filename}`,
-      content: JSON.parse(content),
+      content: contentData,
     });
+
     return {
       statusCode: 200,
       response: response,
     };
   } catch (error) {
+    console.log({ error });
     return {
       statusCode: 500,
       body: JSON.stringify(error),
