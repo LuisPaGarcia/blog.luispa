@@ -14,18 +14,8 @@ export default function SaveText() {
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     loadingSet(true);
-    let contentData;
-
-    if (type === "JSON") {
-      contentData = content;
-    }
-
-    if (type === "Text") {
-      contentData = JSON.stringify({ data: content });
-    }
-
     const data = await redaxios
-      .post("/.netlify/functions/save-text-gist", { filename, content: contentData })
+      .post("/.netlify/functions/save-text-gist", { filename, content })
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
 
