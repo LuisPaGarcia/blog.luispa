@@ -3,7 +3,7 @@ import { GistDB } from "gist-io";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const db = new GistDB({
-  token: GITHUB_TOKEN,
+  token: 'mock',
 });
 
 export async function saveTextUtil({
