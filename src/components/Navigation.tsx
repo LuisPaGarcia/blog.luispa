@@ -48,6 +48,28 @@ export default function Navigation() {
               </a>
             </Link>
           </li>
+          <li>
+            <Link href="/luispa-as-a-service">
+              <a
+                className={
+                  router.pathname.startsWith("/laas") ? "active" : null
+                }
+              >
+                LaaS
+              </a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/save-text">
+              <a
+                className={
+                  router.pathname.startsWith("/packages") ? "active" : null
+                }
+              >
+                Save Text
+              </a>
+            </Link>
+          </li>
         </ul>
         <style jsx>
           {`

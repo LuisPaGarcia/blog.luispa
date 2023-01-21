@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../components/Layout";
 import { useFocus } from "./hooks";
 import { saveTextUtil } from "./saveText.utils";
-
+import redaxios from "redaxios";
 export default function SaveText() {
   const [content, contentSet] = useState("");
   const [filename, titleSet] = useState("test.json");
@@ -10,20 +10,25 @@ export default function SaveText() {
   const [type, typeSet] = useState("Text");
   const inputRef = useRef(null);
   useFocus(inputRef);
-  useEffect(() => {
-    fetch("/.netlify/functions/hello")
-      .then((data) => data.json())
-      .then((data) => console.log(data));
-  });
 
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     loadingSet(true);
+    let contentData;
 
-    const [_, data] = await saveTextUtil({
-      filename: filename,
-      content: type === "JSON" ? JSON.parse(content) : { value: content },
-    });
+    if (type === "JSON") {
+      contentData = content;
+    }
+
+    if (type === "Text") {
+      contentData = JSON.stringify({ data: content });
+    }
+
+    const data = await redaxios
+      .post("/.netlify/functions/save-text-gist", { filename, content: contentData })
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+
     console.log(data);
     loadingSet(false);
   };
