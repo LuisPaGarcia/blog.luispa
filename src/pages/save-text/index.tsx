@@ -10,7 +10,12 @@ export default function SaveText() {
   const [type, typeSet] = useState("Text");
   const inputRef = useRef(null);
   useFocus(inputRef);
-  
+  useEffect(() => {
+    fetch("/api/user")
+      .then((data) => data.json())
+      .then((data) => console.log(data));
+  });
+
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     loadingSet(true);

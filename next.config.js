@@ -1,5 +1,5 @@
 module.exports = ({
-  pageExtensions: ["tsx"],
+  pageExtensions: ['js', 'tsx'],
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push(
       ...[

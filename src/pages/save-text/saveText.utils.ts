@@ -1,5 +1,7 @@
 import { GistDB } from "gist-io";
-import { GITHUB_TOKEN } from "./config.env";
+// import { GITHUB_TOKEN } from "./config.env";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+console.log("process.env", process.env);
 
 const db = new GistDB({
   token: GITHUB_TOKEN,
@@ -13,7 +15,7 @@ export async function saveTextUtil({
   content: object;
 }) {
   try {
-    const filenameCrypto = crypto.randomUUID();
+    const filenameCrypto = window.crypto.randomUUID();
     const response = await db.create({
       filename: `${filenameCrypto}-${filename}`,
       content: content,
