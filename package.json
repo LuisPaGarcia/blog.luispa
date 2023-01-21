@@ -32,7 +32,8 @@
     "react-twitter-embed": "^3.0.3",
     "react-youtube": "^7.13.1",
     "redaxios": "^0.5.1",
-    "schema-dts": "^0.8.2"
+    "schema-dts": "^0.8.2",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",

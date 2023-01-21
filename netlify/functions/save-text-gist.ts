@@ -1,5 +1,6 @@
 import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
 import { GistDB } from "gist-io";
+import { uuid } from "uuidv4";
 
 const db = new GistDB({
   token: process.env.GITHUB_TOKEN,
@@ -25,8 +26,8 @@ const handler: Handler = async (
   }
 
   try {
-    const filenameCrypto = crypto?.randomUUID();
-    
+    const filenameCrypto = uuid();
+
     const response = await db.create({
       filename: `${filenameCrypto}-${filename}`,
       content: contentData,
