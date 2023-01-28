@@ -21,7 +21,7 @@ export default function ForzaPrecios() {
         }}
       >
         <h1>Forza Precios</h1>
-        {data && (JSON.stringify(data) || "No data")}
+        {data && (JSON.stringify(JSON.parse(data.data), null, 2) || "No data")}
       </section>
     </Layout>
   );
