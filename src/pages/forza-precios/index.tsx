@@ -11,7 +11,7 @@ export default function ForzaPrecios() {
       setData(response.data);
     }
     call();
-  });
+  }, []);
 
   return (
     <Layout>
