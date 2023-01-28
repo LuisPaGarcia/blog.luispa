@@ -21,6 +21,11 @@ export default function Apps() {
               <a>files</a>
             </Link>
           </li>
+          <li>
+            <Link href="/forza-precios">
+              <a>Forza Precios</a>
+            </Link>
+          </li>
         </ul>
       </section>
     </Layout>
