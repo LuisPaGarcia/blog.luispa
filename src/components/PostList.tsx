@@ -4,6 +4,7 @@ import PostItem from "./PostItem";
 import TagLink from "./TagLink";
 import Pagination from "./Pagination";
 import { TagContent } from "../lib/tags";
+import { SocialList } from "./SocialList";
 
 type Props = {
   posts: PostContent[];
@@ -16,22 +17,43 @@ type Props = {
 export default function PostList({ posts, tags, pagination }: Props) {
   return (
     <div className={"container"}>
-      <div className={"posts"}>
-        <ul className={"post-list"}>
-          {posts.map((it, i) => (
-            <li key={i}>
-              <PostItem post={it} />
-            </li>
-          ))}
-        </ul>
-        <Pagination
-          current={pagination.current}
-          pages={pagination.pages}
-          link={{
-            href: (page) => (page === 1 ? "/posts" : "/posts/page/[page]"),
-            as: (page) => (page === 1 ? null : "/posts/page/" + page),
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}  
+      >
+        <div
+          style={{
+            marginBottom: "4rem",
           }}
-        />
+        >
+          <h1>
+            LuisPa's Blog<span className="fancy">.</span>
+          </h1>
+          <span className="handle">
+            Software Engineer - Node.js | Golang | React | Web Stuff
+          </span>
+          <h2>A blog with some thoughts and opinions.</h2>
+          <SocialList />
+        </div>
+        <div className={"posts"}>
+          <ul className={"post-list"}>
+            {posts.map((it, i) => (
+              <li key={i}>
+                <PostItem post={it} />
+              </li>
+            ))}
+          </ul>
+          <Pagination
+            current={pagination.current}
+            pages={pagination.pages}
+            link={{
+              href: (page) => (page === 1 ? "/posts" : "/posts/page/[page]"),
+              as: (page) => (page === 1 ? null : "/posts/page/" + page),
+            }}
+          />
+        </div>
       </div>
       <style jsx>{`
         .container {

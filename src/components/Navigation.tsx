@@ -14,17 +14,24 @@ export default function Navigation() {
         <ul>
           <li>
             <Link href="/">
-              <a className={router.pathname === "/" ? "active" : null}>about</a>
+              <a className={router.pathname === "/" ? "active" : null}>blog</a>
             </Link>
           </li>
           <li>
-            <Link href="/posts">
+            <Link href="/about">
+              <a className={router.pathname === "/about" ? "active" : null}>
+                about
+              </a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/npm-libs">
               <a
                 className={
-                  router.pathname.startsWith("/posts") ? "active" : null
+                  router.pathname.startsWith("/npm-libs") ? "active" : null
                 }
               >
-                blog
+                npm libs
               </a>
             </Link>
           </li>
@@ -34,21 +41,9 @@ export default function Navigation() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              open source
+              github
             </a>
           </li>
-          <li>
-            <Link href="/packages">
-              <a
-                className={
-                  router.pathname.startsWith("/packages") ? "active" : null
-                }
-              >
-                packages
-              </a>
-            </Link>
-          </li>
-         
         </ul>
         <style jsx>
           {`
