@@ -1,10 +1,10 @@
-import Layout from "../components/Layout";
-import BasicMeta from "../components/meta/BasicMeta";
-import OpenGraphMeta from "../components/meta/OpenGraphMeta";
-import TwitterCardMeta from "../components/meta/TwitterCardMeta";
-import { Packages } from "../components/Packages";
+import Layout from "../../components/Layout";
+import BasicMeta from "../../components/meta/BasicMeta";
+import OpenGraphMeta from "../../components/meta/OpenGraphMeta";
+import TwitterCardMeta from "../../components/meta/TwitterCardMeta";
+import { Packages } from "../../components/Packages";
 
-export default function Index() {
+export default function PackagesPage() {
   return (
     <Layout>
       <BasicMeta url={"/"} />
