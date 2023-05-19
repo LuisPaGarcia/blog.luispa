@@ -11,6 +11,7 @@ Quick post about a thing I learned this week solving some specific issue.
 Every time you use `setInterval` and integer id is returned, this id is the global identification to that specific task made by your `setInterval` usage.
 
 So, if you run:
+
 ```js
 var intervalId = setInterval(function(){ 
   console.log('Hey!') 
@@ -21,6 +22,7 @@ var intervalId = setInterval(function(){
 > Hey!
 ...
 ```
+
 Each execution is an async callback of the console log, let's print the `intervalId` value:
 
 ```js
@@ -49,7 +51,7 @@ We could run a simple loop using `clearInteval` to stop all the intervals in som
 
 ```js
 // The 1K limitation is optional, can be less
-for( let id = 1; id < 1000; a++ ) {
+for( let id = 1; id < 1000; id++ ) {
   clearInterval(id);
 };
 ```
@@ -59,6 +61,3 @@ This code will run 1000 times and clear all the intervals between 1 and 1000. Is
 If you want to try this, go to this site https://vclock.com/timer/ and run the loop in the console.
 
 Happy Coding!
-
-
-
