@@ -1,0 +1,198 @@
+---
+slug: how-to-add-a-dynamic-title-on-your-react-app
+title: How to add a dynamic title on your React app (hooks)
+date: 2021-01-13
+author: luispa
+---
+Hi there!
+
+The last time I posted [How to add a dynamic title on your React app](https://dev.to/luispa/how-to-add-a-dynamic-title-on-your-react-app----3l0j) using react-helmet. Since then, I found a way to do the same using React Hooks. Both approaches solve the problem, in my opinion, this is more simple. In the end, you choose :)
+
+Let's start.
+
+In this post, I'll show you how to create a simple React Hook to add a dynamic title behavior on your web app.
+
+If you don't have any idea what React Hooks is, you can read all the things related [here](https://reactjs.org/docs/hooks-intro.html)
+
+Here you have a repo with an applicable example: [GitHub Repo](https://github.com/LuisPaGarcia/react-dynamic-title-hook)
+
+## Summary
+1. Create a function to handle the title change.
+2. Use it in every page component of your application.
+
+### 1. Create a function to handle the title change.
+
+We will create the hook that will make the title change, we will be called it `useDocumentTitle.js`:
+
+```javascript
+// useDocumentTitle.js
+import { useRef, useEffect } from 'react'
+
+function useDocumentTitle(title, prevailOnUnmount = false) {
+  const defaultTitle = useRef(document.title);
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => () => {
+    if (!prevailOnUnmount) {
+      document.title = defaultTitle.current;
+    }
+  }, [])
+}
+
+export default useDocumentTitle
+```
+
+We will use this hook to handle the title change, every time the title parameter change. 
+
+### Some notes here:
+
+- This function handles `prevailOnUnmount` configuration. 
+- This is optional, but the idea is to maintain the same title if the component using this hook is unmounted. 
+- If you don't want to use it, the default value is `false`.
+
+Let's see how to use it 
+
+### 2. Use it in every page component of your application.
+
+For this example, we will see two scenarios: A simple one and a complex one.
+
+Let's see the simple one:
+
+```javascript
+// AppSimple.js
+import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import useDocumentTitle from './useDocumentTitle'
+
+function Page(props) {
+  return <h2>{props.content}</h2>
+}
+
+function Home() {
+  useDocumentTitle('Home title 👻')
+  return <Page content='This is Home! ' />
+}
+
+function About() {
+  useDocumentTitle('About title 👽')
+  return <Page content='About!' />
+}
+
+function Other() {
+  useDocumentTitle('Other title 👾')
+  return <Page content='And this is Other!' />
+}
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/about'>About</Link>
+          </li>
+          <li>
+            <Link to='/other'>Other</Link>
+          </li>
+        </ul>
+
+        <hr />
+
+        <Route exact path='/' component={Home} />
+        <Route path='/about' component={About} />
+        <Route path='/other' component={Other} />
+      </div>
+    </Router>
+  )
+}
+
+export default App
+
+```
+
+As you can see, every component uses the `useDocumentTitle` hook. This is the most simple way to manage the title change.
+
+### Some notes here:
+- We are using `react-router` to handle multiple pages for our app.
+- Every page component have a `useDocumentTitle` execution.
+- The title will change every time the component is mounted.
+- You can see the live example [here](https://stackblitz.com/edit/react-2abnh9)
+- To see it better, select the option `Open In New Window` to see the title change.
+
+Just take a look in a second approach using something just a little bit more complex.
+
+
+```javascript
+// AppSimple.js
+import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import useDocumentTitle from './useDocumentTitle'
+
+function Page(props) {
+  const titlePrefix = 'AppName 🤠 | '
+  useDocumentTitle(`${titlePrefix}${props.title}`)
+  return <h2>{props.content}</h2>
+}
+
+function Home() {
+  return <Page content='This is Home!' title='Home Title 👻' />
+}
+
+function About() {
+  return <Page content='About!' title='About title 👽' />
+}
+
+function Other() {
+  return <Page content='And this is Other!' title='Other title 👾' />
+}
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/about'>About</Link>
+          </li>
+          <li>
+            <Link to='/other'>Other</Link>
+          </li>
+        </ul>
+
+        <hr />
+
+        <Route exact path='/' component={Home} />
+        <Route path='/about' component={About} />
+        <Route path='/other' component={Other} />
+      </div>
+    </Router>
+  )
+}
+
+export default App
+
+```
+As you can see, just one component called `Page` is calling the hook. In this way, we send every title as a `prop` on each page, and the `Page` component uses it to change it.
+
+Some notes here:
+- We are using the same structure of `react-router` to handle multiple pages for our app, in comparison with the simple example.
+- We have one component centralized to execute `useDocumentTitle`.
+- This `Page` component has a new thing called `titlePrefix` this value is just to see you can set a prefix (text before your title) in every title change.
+- This is absolutely optional, but it's cool to understand it and play with it.
+- You can see the live example [here](https://stackblitz.com/edit/react-2abnh9)
+- To see it better, select the option `Open In New Window` to see the title change.
+
+
+And that's it. Thanks for reading and happy coding!
+
+- Repo [here](https://github.com/LuisPaGarcia/react-dynamic-title-hook)
+- Live example [here](https://stackblitz.com/edit/react-2abnh9)
