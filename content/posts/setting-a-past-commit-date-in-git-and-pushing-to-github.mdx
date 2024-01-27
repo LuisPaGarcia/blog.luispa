@@ -1,0 +1,55 @@
+---
+slug: setting-a-past-commit-date-in-git-and-pushing-to-github
+title: Setting a Past Commit Date in Git and Pushing to GitHub
+date: 2024-01-26
+author: luispa
+tags:
+  - document
+---
+# Setting a Past Commit Date in Git and Pushing to GitHub
+
+Sometimes, you might find yourself needing to set a commit to a past date, for example, to maintain consistency in your commit history or to trick you branch. Here's a guide on how to do this and push the commit to GitHub, ensuring the commit appears with the desired past date.
+
+## Step 1: Configure Your Local Repository
+
+Ensure you have a local Git repository set up. If not, clone your desired GitHub repository to your local machine.
+
+## Step 2: Make Your Changes
+
+Edit files and make the changes you want to commit.
+
+## Step 3: Stage Your Changes
+
+Use the `git add` command to stage your changes for commit:
+
+```sh
+$ git add .
+```
+
+## Step 4: Set the Commit Date
+
+To set the commit date to a past date, such as January 14, 2024, you can use the `GIT_COMMITTER_DATE` environment variable along with the `--date` option in the `git commit` command:
+
+```sh
+$ GIT_COMMITTER_DATE="2024-01-14T12:00:00" git commit --date="2024-01-14T12:00:00" -m "Your commit message"
+```
+
+Replace `"2024-01-14T12:00:00"` with the exact date and time you wish to set, formatted as `YYYY-MM-DDTHH:MM:SS`.
+
+## Step 5: Push to GitHub
+
+After committing with the specified date, push your changes to the remote repository on GitHub:
+
+```sh
+git push origin main
+```
+
+Make sure to replace `main` with the correct branch name if different.
+
+## Step 6: Verify on GitHub
+
+Check your GitHub repository to ensure the commit reflects the correct date.
+
+**Note:** Altering commit dates can lead to confusion, especially in collaborative projects. It's crucial to use this for appropriate scenarios and adhere to project guidelines regarding commit integrity.
+
+Happy Hacking!
