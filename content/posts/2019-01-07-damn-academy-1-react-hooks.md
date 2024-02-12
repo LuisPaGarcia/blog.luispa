@@ -135,7 +135,6 @@ $ npm run start
 Listo, ahora puedes empezar a utilizar React Hooks!
 
 **Repositorio de Github**
-<https://github.com/LuisPaGarcia/damn-hooks>
 
 **Documentación detallada de Facebook:**
 
