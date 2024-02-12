@@ -7,6 +7,9 @@ type Props = {
   post: PostContent;
 };
 export default function PostItem({ post }: Props) {
+  if (post.slug === 'being_in_a_toxic_relationship')
+    return null
+  
   return (
     <Link href={"/posts/" + post.slug}>
       <a>
