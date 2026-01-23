@@ -3,3 +3,4 @@
   command = "npm run export"
 [build.environment]
   NODE_OPTIONS = "--openssl-legacy-provider"
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
