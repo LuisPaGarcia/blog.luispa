@@ -21,3 +21,59 @@ tags:
     name: nodejs
   - slug: puppeteer
     name: puppeteer
+  - slug: opinion
+    name: opinion
+  - slug: career
+    name: career
+  - slug: engineering
+    name: engineering
+  - slug: growth
+    name: growth
+  - slug: programming
+    name: programming
+  - slug: abstraction
+    name: abstraction
+  - slug: dry
+    name: dry
+  - slug: refactoring
+    name: refactoring
+  # Technical Tags
+  - slug: react
+    name: react
+  - slug: git
+    name: git
+  - slug: security
+    name: security
+  - slug: devops
+    name: devops
+  - slug: bash
+    name: bash
+  - slug: go
+    name: go
+  - slug: deno
+    name: deno
+  - slug: aws
+    name: aws
+  - slug: css
+    name: css
+  - slug: api
+    name: api
+  - slug: testing
+    name: testing
+  - slug: linux
+    name: linux
+  - slug: mac
+    name: mac
+  - slug: productivity
+    name: productivity
+  # Personal/Lifestyle Tags
+  - slug: learning
+    name: learning
+  - slug: teaching
+    name: teaching
+  - slug: ai
+    name: ai
+  - slug: life
+    name: life
+  - slug: thoughts
+    name: thoughts
