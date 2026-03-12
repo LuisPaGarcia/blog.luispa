@@ -1,4 +1,10 @@
 tags:
+  - slug: ai
+    name: ai
+  - slug: agents
+    name: agents
+  - slug: picoclaw
+    name: picoclaw
   - slug: document
     name: document
   - slug: mock
