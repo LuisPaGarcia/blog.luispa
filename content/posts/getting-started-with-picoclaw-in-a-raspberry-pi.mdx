@@ -1,0 +1,198 @@
+---
+slug: getting-started-with-picoclaw-in-a-raspberry-pi
+title: Getting started with PicoClaw in a Raspberry pi
+date: 2026-03-12
+author: luispa
+tags:
+  - ai
+  - agents
+  - picoclaw
+---
+![](/images/picoclaw-raspi-2329cb909ccdc9e0.webp)
+
+T﻿his is how I started my first AI assistant using a **Raspberry Pi Zero 2 W** ([link here](https://www.amazon.com/-/es/dp/B09LH5SBPS?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1)) and **PicoClaw** ([link here](https://github.com/sipeed/picoclaw)), a lightweight version made in Go lang of Moltbot. I can chat to Pico via Telegram bot. 
+
+> ﻿PicoClaw is an ultra-lightweight personal AI Assistant inspired by nanobot, refactored from the ground up in Go through a self-bootstrapping process, where the AI agent itself drove the entire architectural migration and code optimization.
+
+Initially I used this Raspberry PI as a DNS proxy with Pi Hole ([link here](https://pi-hole.net/)) but now allocates PicoPauly assistant. 
+
+## G﻿etting started.
+
+### **1. Prepare your Raspberry**
+
+Setup your Raspberry Pi. Must be connected to internet. You can follow [this simple tutorial](https://www.youtube.com/watch?v=LXIL4qxN3lE) on how to install a Linux distribution in your RBP. 
+
+O﻿nce you can connect to your RBP via SSH this step is done.
+
+**2. Install PicoClaw in your Raspberry**
+
+\-﻿ Log in into your RBP. 
+-﻿ Based in the arch of your RBP you can download the correct binary. I would recommend to download a binary instead doing the build by yourself, the RBP will not have enough resources to make the build.
+-﻿ In my case, I downloaded the `arm64` version `0.2.2`. This one the latest at this moment.
+
+R﻿un this to fetch, and setup your pico bin ready to be used as a new service.
+
+```shell
+mkdir ~/picoclaw && cd ~/picoclaw # Create directory
+wget https://github.com/sipeed/picoclaw/releases/download/v0.2.2/picoclaw_Linux_arm64.tar.gz # Get Pico bin
+tar -xzf picoclaw_Linux_arm64.tar.gz # Unpack bin
+sudo mv ~/picoclaw/picoclaw /usr/local/bin/ # Move bin to be executed for the current user in any directory
+sudo chmod +x /usr/local/bin/picoclaw # This will add permissions to run the executable by this user
+
+# Now you can run this
+picoclaw onboard # This script will create a new json file with the config to communicate with you and any model 
+```
+
+### **3. Setup your channels and your model**
+
+W﻿e must specify the channels and the model provider we want to use for our agent. In my case I used **Telegram** and **OpenAI.**
+
+L﻿et's edit the PicoClaw file to specify this:
+
+```shell
+# Edit the config file
+nano /home/pi/.picoclaw/config.json 
+```
+
+U﻿pdated 2 things:
+
+* `channel.telegram`
+* `agents.defaults`
+
+T﻿o use Telegram as channel we need to have 2 things:
+
+*﻿ `Bot token` - our bot ID token*
+﻿ `Chat Id` - our user ID to be accepted by the bot.
+
+T﻿o get this we need to:
+
+#### 1. Create a telegram bot:
+
+* Open Telegram and search for `@BotFather`
+* Send `/newbot`, follow the prompts 
+* Copy the `bot token` 
+
+#### 2. Get Your User ID
+
+* Message @userinfobot on Telegram
+* Copy your User ID
+
+#### 3. Update the file
+
+```json
+{
+  "channels": {
+    "telegram": {
+      "enabled": true, // update it to true
+      "token": "YOUR_BOT_TOKEN", // put the bot token
+      "allow_from": ["YOUR_USER_ID"] // add your chat ID as string
+    }
+  }
+}
+```
+
+Then, we need to get our OpenAI API token:
+
+Edit `~/.picoclaw/config.json`:
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "workspace": "~/.picoclaw/workspace",
+      "model_name": "gpt-5.4", // The model name should match with 
+      "max_tokens": 32768,
+      "max_tool_iterations": 50
+    }
+  },
+  "model_list": [
+    {
+      "model_name": "gpt-5.4", // The model name should match with the one in agents prop
+      "model": "openai/gpt-5.4",
+      "api_key": "your-api-key" // Put here your api key
+    },
+    {
+      "model_name": "claude-sonnet-4.6", // Example using Claude
+      "model": "anthropic/claude-sonnet-4-6",
+      "api_key": "your-anthropic-key"
+    }
+  ]
+}
+```
+
+S﻿ave the file and test the configuration:
+
+```shell
+# One-shot chat
+picoclaw agent -m "What is 2+2?"
+```
+
+A﻿t this point our PicoClaw can be used with Telegram. Let's do it! Run this:
+
+```shell
+#﻿ Interactive mode
+picoclaw agent
+```
+
+In your Telegram app:
+
+1﻿. Search for your bot you've created before with the name you've set.
+
+2﻿. Send the `/start` text.
+
+3﻿. If you receive a response this has been completed and plugged in.
+
+N﻿ow you can Start the PicoClaw as a service that will start on boot. To do this we must:
+
+```shell
+#﻿ Create a boot file
+sudo nano /etc/systemd/system/picoclaw.service
+```
+
+P﻿ut this inside the file:
+
+```ini
+[Unit]
+Description=Picoclaw Gateway
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/local/bin/picoclaw gateway
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+R﻿eload the services list
+
+```shell
+sudo systemctl daemon-reload
+```
+
+S﻿tart the service 
+
+```shell
+sudo systemctl start picoclaw
+```
+
+C﻿heck the PicoClaw service
+
+```shell
+sudo systemctl status picoclaw
+#﻿ or
+systemctl is-enabled picoclaw
+```
+
+Check the live logs
+
+```shell
+journalctl -u picoclaw -f
+```
+
+N﻿ow, your service is live and you will be able to use it remotely.
+
+H﻿appy hacking!
