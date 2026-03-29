@@ -13,6 +13,18 @@ import InstagramEmbed from "react-instagram-embed";
 import YouTube from "react-youtube";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
+function Link({ href, children, ...props }) {
+  const isExternal = href && (href.startsWith("http") || href.startsWith("https"));
+  if (isExternal) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+        {children}
+      </a>
+    );
+  }
+  return <a href={href} {...props}>{children}</a>;
+}
+
 export type Props = {
   title: string;
   dateString: string;
@@ -23,7 +35,7 @@ export type Props = {
   source: MdxRemote.Source;
 };
 
-const components = { InstagramEmbed, YouTube, TwitterTweetEmbed };
+const components = { InstagramEmbed, YouTube, TwitterTweetEmbed, a: Link };
 const slugToPostContent = (postContents => {
   let hash = {}
   postContents.forEach(it => hash[it.slug] = it)
