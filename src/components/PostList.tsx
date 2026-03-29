@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PostContent } from "../lib/posts";
 import PostItem from "./PostItem";
 import TagLink from "./TagLink";
@@ -15,6 +15,9 @@ type Props = {
   };
 };
 export default function PostList({ posts, tags, pagination }: Props) {
+  const [showAll, setShowAll] = useState(false);
+  const displayedPosts = showAll ? posts : posts.slice(0, 5);
+  const hasMorePosts = posts.length > 5;
   return (
     <div className={"container"}>
       <div
@@ -39,12 +42,17 @@ export default function PostList({ posts, tags, pagination }: Props) {
         </div>
         <div className={"posts"}>
           <ul className={"post-list"}>
-            {posts.map((it, i) => (
+            {displayedPosts.map((it, i) => (
               <li key={i}>
                 <PostItem post={it} />
               </li>
             ))}
           </ul>
+          {hasMorePosts && !showAll && (
+            <button className="see-all-btn" onClick={() => setShowAll(true)}>
+              See all
+            </button>
+          )}
           <Pagination
             current={pagination.current}
             pages={pagination.pages}
@@ -80,6 +88,21 @@ export default function PostList({ posts, tags, pagination }: Props) {
         }
         .post-list {
           flex: 1 0 auto;
+        }
+        .see-all-btn {
+          background-color: rgba(21, 132, 125, 0.2);
+          border: none;
+          border-radius: 4px;
+          color: #15847d;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: 500;
+          padding: 0.75rem 1.5rem;
+          margin: 1rem 0;
+          transition: background-color 0.2s;
+        }
+        .see-all-btn:hover {
+          background-color: rgba(21, 132, 125, 0.4);
         }
       `}</style>
     </div>
