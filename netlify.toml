@@ -4,3 +4,15 @@
 [build.environment]
   NODE_OPTIONS = "--openssl-legacy-provider"
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[[redirects]]
+  from = "/form"
+  to = "https://forms.gle/JucM2t9MpqfwdLecA"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/form/"
+  to = "https://forms.gle/JucM2t9MpqfwdLecA"
+  status = 302
+  force = true
