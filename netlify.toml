@@ -16,3 +16,15 @@
   to = "https://forms.gle/JucM2t9MpqfwdLecA"
   status = 302
   force = true
+
+[[redirects]]
+  from = "/resume"
+  to = "https://blog.luispa.dev/static/resume_luis_garcia.pdf"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/resume/"
+  to = "https://blog.luispa.dev/static/resume_luis_garcia.pdf"
+  status = 302
+  force = true
