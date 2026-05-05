@@ -1,5 +1,13 @@
 module.exports = ({
   pageExtensions: ["tsx"],
+  async rewrites() {
+    return [
+      {
+        source: "/resume",
+        destination: "/static/resume-luispa-garcia.pdf",
+      },
+    ];
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push(
       ...[
