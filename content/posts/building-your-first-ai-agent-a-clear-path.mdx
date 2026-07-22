@@ -24,7 +24,7 @@ handle reasoning and structured outputs, because that's what agents rely on.
 
 4. Build the skeleton workflow Don't jump into complex frameworks yet. Start by wiring the basics: - Input from the user (the task or goal) - Pass it through the model with instructions (system prompt) - Let the model decide the next step - If a tool is needed (API call, scrape, action), execute it - Feed the result back into the model for the next step - Continue until the task is done or the user gets a final output
 
-This loop - model --> tool--> result -->model is the heartbeat of every agent.
+> This loop - model --> tool--> result -->model is the heartbeat of every agent.
 
 1. Add memory carefully Most beginners think agents need massive memory systems right away. Not true. Start with just short-term context (the last few messages). If your agent needs to remember things across runs, use a database or a simple JSON file. Only add vector databases or fancy retrieval when you really need them.
 
