@@ -1,0 +1,42 @@
+---
+slug: building-your-first-ai-agent-a-clear-path
+title: Building your first AI agent; A clear path
+date: 2026-07-22
+author: luispa
+tags:
+  - ai
+  - agents
+---
+**TL;DR:** Start with one small, clearly defined task and use an existing LLM. Give the agent only the tools it needs, then build the basic loop: **model → tool → result → model**. Begin with simple memory and a basic interface, test it on real tasks, and improve it through small iterations. Avoid overengineering or chasing a “universal agent.” The fastest way to learn is to build one focused agent end-to-end.
+
+Quick post today.
+
+
+I've seen a lot of people get excited about building Al agents but end up stuck because everything sounds either too abstract or too hyped. If you're serious about making your first Al agent, here's a path you can actually follow.
+This isn't (another) theory it's the same process I've used multiple times to build working agents.
+
+1. Pick a very small and very clear problem Forget about building a "general agent" right now. Decide on one specific job you want the agent to do. Examples: - Book a doctor's appointment from a hospital website - Monitor job boards and send you matching jobs - Summarize unread emails in your inbox The smaller and clearer the problem, the easier it is to design and debug.
+
+2. Choose a base LLM Don't waste time training your own model in the beginning. Use something that's already good enough. GPT, Claude, Gemini, or open-source options like LLaMA and Mistral if you want to self-host. Just make sure the model can 
+handle reasoning and structured outputs, because that's what agents rely on.
+
+3. Decide how the agent will interact with the outside world This is the core part people skip. An agent isn't jus a chatbot but it needs tools. You'll need to decide what APs or actions it can use. A few common ones: - Web scraping or browsing (Playwright, Puppeteer, or APls if available) - Email API (Gmail API, Outlook API) - Calendar API (Google Calendar, Outlook Calendar) - File operations (read/write to disk, parse PDFs, etc.)
+
+4. Build the skeleton workflow Don't jump into complex frameworks yet. Start by wiring the basics: - Input from the user (the task or goal) - Pass it through the model with instructions (system prompt) - Let the model decide the next step - If a tool is needed (API call, scrape, action), execute it - Feed the result back into the model for the next step - Continue until the task is done or the user gets a final output
+
+This loop - model --> tool--> result -->model is the heartbeat of every agent.
+
+1. Add memory carefully Most beginners think agents need massive memory systems right away. Not true. Start with just short-term context (the last few messages). If your agent needs to remember things across runs, use a database or a simple JSON file. Only add vector databases or fancy retrieval when you really need them.
+
+2. Wrap it in a usable interface CLI is fine at first. Once it works, give it a simple interface: - A web dashboard (Flask, FastAPI, or Next.js) - A Slack/Discord bot - Or even just a script that runs on your machine The point is to make it usable beyond your terminal so you see how it behaves in a real workflow.
+
+3. Iterate in small cycles Don't expect it to work perfectly the first time. Run real tasks, see where it breaks, patch it, run again. Every agent I've built has gone through dozens of these cycles before becoming reliable.
+
+4. Keep the scope under control It's tempting to keep adding more tools and features. Resist that. A single well-functioning agent that can book an appointment or manage your email is worth way more than a
+"universal agent" that keeps failing.
+
+The fastest way to learn is to build one specific agent, end-to-end. Once you've done that, making the next one becomes ten times easier because you already understand the full pipeline.
+
+And that's it.
+
+Happy Hacking!
