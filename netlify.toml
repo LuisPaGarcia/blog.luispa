@@ -28,3 +28,27 @@
   to = "https://blog.luispa.dev/static/resume_luis_garcia.pdf"
   status = 302
   force = true
+
+[[redirects]]
+from = "/gaby/procedimientos-civiles-y-familiares"
+to = "https://mexico.justia.com/federales/codigos/codigo-nacional-de-procedimientos-civiles-y-familiares/gdoc/"
+status = 302
+force = true
+
+[[redirects]]
+from = "/gaby/codigo-general-del-proceso"
+to = "http://www.secretariasenado.gov.co/senado/basedoc/ley_1564_2012.html"
+status = 302
+force = true
+
+[[redirects]]
+from = "/gaby/codigo-general-del-proceso-2"
+to = "https://www.impo.com.uy/bases/codigo-general-proceso/15982-1988"
+status = 302
+force = true
+
+[[redirects]]
+from = "/gaby/decreto-806-de-2020"
+to = "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=127580"
+status = 302
+force = true
