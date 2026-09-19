@@ -31,13 +31,13 @@
 
 [[redirects]]
 from = "/gaby/procedimientos-civiles-y-familiares"
-to = "https://mexico.justia.com/federales/codigos/codigo-nacional-de-procedimientos-civiles-y-familiares/gdoc/"
+to = "/static/codigo-nacional-de-procedimientos-civiles-y-familiares.pdf"
 status = 302
 force = true
 
 [[redirects]]
 from = "/gaby/codigo-general-del-proceso"
-to = "http://www.secretariasenado.gov.co/senado/basedoc/ley_1564_2012.html"
+to = "/static/Leyes desde 1992 - Vigencia expresa y control de constitucionalidad [LEY_1564_2012].pdf"
 status = 302
 force = true
 
@@ -49,6 +49,6 @@ force = true
 
 [[redirects]]
 from = "/gaby/decreto-806-de-2020"
-to = "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=127580"
+to = "/static/3Decreto_806_de_2020.pdf"
 status = 302
 force = true
