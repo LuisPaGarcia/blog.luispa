@@ -43,7 +43,7 @@ force = true
 
 [[redirects]]
 from = "/gaby/codigo-general-del-proceso-2"
-to = "https://www.impo.com.uy/bases/codigo-general-proceso/15982-1988"
+to = "/static/codigo-general-proceso-uruguay.pdf"
 status = 302
 force = true
 
